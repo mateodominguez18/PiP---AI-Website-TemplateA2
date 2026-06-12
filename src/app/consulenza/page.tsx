@@ -1,10 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getConsultingAreas } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ConsultingCard } from "@/components/ConsultingCard";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export default async function ConsulenzaPage() {
   const consultingAreas = await getConsultingAreas();
@@ -49,3 +49,4 @@ export default async function ConsulenzaPage() {
     </div>
   );
 }
+

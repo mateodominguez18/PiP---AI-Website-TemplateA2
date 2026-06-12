@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
 import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
@@ -7,18 +7,18 @@ import { TeamCard } from "@/components/TeamCard";
 import { HomeContactForm } from "./_components/HomeContactForm";
 import { formatDate } from "@/lib/utils";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const differentiators = [
   { icon: BookOpen, title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },
   { icon: Users, title: "Interlocutore dedicato", description: "Ogni cliente ha un professionista di riferimento specifico. Nessun call center, nessun rimbalzo tra uffici: risposta diretta alle richieste, sempre dallo stesso interlocutore qualificato." },
-  { icon: Shield, title: "Esperienza multidisciplinare", description: "Il nostro team integra competenze fiscali, societarie e del lavoro. Affrontiamo i problemi nella loro complessità reale, senza frammentare l'analisi in silos separati." },
-  { icon: Award, title: "Approccio personalizzato", description: "Non esistono soluzioni standard. Ogni consulenza parte da un'analisi puntuale della situazione del cliente, degli obiettivi e del contesto, per arrivare alla risposta concretamente più utile." },
-  { icon: Clock, title: "Tempestività e rispetto delle scadenze", description: "Gestiamo tutte le scadenze fiscali e civilistiche con un sistema di monitoraggio interno. Il cliente non deve preoccuparsi di ricordare termini: ci pensiamo noi." },
+  { icon: Shield, title: "Esperienza multidisciplinare", description: "Il nostro team integra competenze fiscali, societarie e del lavoro. Affrontiamo i problemi nella loro complessitÃ  reale, senza frammentare l'analisi in silos separati." },
+  { icon: Award, title: "Approccio personalizzato", description: "Non esistono soluzioni standard. Ogni consulenza parte da un'analisi puntuale della situazione del cliente, degli obiettivi e del contesto, per arrivare alla risposta concretamente piÃ¹ utile." },
+  { icon: Clock, title: "TempestivitÃ  e rispetto delle scadenze", description: "Gestiamo tutte le scadenze fiscali e civilistiche con un sistema di monitoraggio interno. Il cliente non deve preoccuparsi di ricordare termini: ci pensiamo noi." },
 ];
 
 const trustMetrics = [
-  { value: "22+", label: "Anni di attività" },
+  { value: "22+", label: "Anni di attivitÃ " },
   { value: "300+", label: "Clienti assistiti" },
   { value: "4", label: "Professionisti dedicati" },
   { value: "100%", label: "Assistenza diretta" },
@@ -76,7 +76,7 @@ export default async function HomePage() {
         <div className="container" style={{ position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="hero-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale · Milano dal 2002</p>
+              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale Â· Milano dal 2002</p>
               <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>Consulenza fiscale e societaria per imprenditori e PMI</h1>
               <p style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "rgba(255,255,255,0.72)", marginBottom: "2rem", maxWidth: "32rem" }}>
                 Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.
@@ -139,7 +139,7 @@ export default async function HomePage() {
               <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Calendario fiscale</p>
               <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>Prossime scadenze fiscali</h2>
               <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "var(--foreground-muted)", marginBottom: "1.5rem" }}>
-                Teniamo traccia di tutti gli adempimenti rilevanti. Il calendario è aggiornato con le principali scadenze per imprese, professionisti e persone fisiche.
+                Teniamo traccia di tutti gli adempimenti rilevanti. Il calendario Ã¨ aggiornato con le principali scadenze per imprese, professionisti e persone fisiche.
               </p>
               <Link href="/scadenze" className="btn-primary">Calendario completo <ArrowRight size={15} /></Link>
             </div>
@@ -151,7 +151,7 @@ export default async function HomePage() {
                       <th style={{ width: "7rem" }}>Data</th>
                       <th>Adempimento</th>
                       <th style={{ width: "6rem" }}>Categoria</th>
-                      <th style={{ width: "5rem" }}>Priorità</th>
+                      <th style={{ width: "5rem" }}>PrioritÃ </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -179,13 +179,13 @@ export default async function HomePage() {
         <style>{`@media (max-width: 900px) { .deadlines-grid { grid-template-columns: 1fr !important; } }`}</style>
       </section>
 
-      {/* Guide e Novità */}
+      {/* Guide e NovitÃ  */}
       <section className="section">
         <div className="container">
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.5rem", gap: "1rem", flexWrap: "wrap" }}>
             <div>
               <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Aggiornamento normativo</p>
-              <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>Guide e Novità fiscali</h2>
+              <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>Guide e NovitÃ  fiscali</h2>
             </div>
             <Link href="/guide" className="btn-secondary" style={{ flexShrink: 0 }}>Tutti gli articoli <ArrowRight size={15} /></Link>
           </div>
@@ -195,12 +195,12 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Perché scegliere lo studio */}
+      {/* PerchÃ© scegliere lo studio */}
       <section className="section" style={{ background: `linear-gradient(180deg, var(--brand-navy-dark) 0%, var(--brand-navy) 100%)` }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
             <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "0.625rem" }}>Il nostro approccio</p>
-            <h2 className="section-title" style={{ color: "white" }}>Perché scegliere lo Studio</h2>
+            <h2 className="section-title" style={{ color: "white" }}>PerchÃ© scegliere lo Studio</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {differentiators.map((item, i) => {
@@ -246,7 +246,7 @@ export default async function HomePage() {
               <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Parlaci del tuo progetto</p>
               <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>Richiedi una prima consulenza</h2>
               <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--foreground-muted)", marginBottom: "1.75rem" }}>
-                Raccontaci la tua situazione e un nostro professionista ti contatterà entro 24 ore lavorative per valutare insieme come possiamo assisterti.
+                Raccontaci la tua situazione e un nostro professionista ti contatterÃ  entro 24 ore lavorative per valutare insieme come possiamo assisterti.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <a href={`tel:${phone}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
@@ -280,3 +280,4 @@ export default async function HomePage() {
     </div>
   );
 }
+

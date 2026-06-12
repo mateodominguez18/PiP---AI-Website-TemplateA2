@@ -1,8 +1,8 @@
-import { getTaxDeadlines } from "@/lib/queries";
+﻿import { getTaxDeadlines } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ScadenzeClient } from "../_components/ScadenzeClient";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export default async function ScadenzePage() {
   const deadlines = await getTaxDeadlines();
@@ -35,3 +35,4 @@ export default async function ScadenzePage() {
     </div>
   );
 }
+

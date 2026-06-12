@@ -7,7 +7,7 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArticleCard } from "@/components/ArticleCard";
 import { formatDateFull } from "@/lib/utils";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=450&fit=crop";
 
 function slugify(name: string) {

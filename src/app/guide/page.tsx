@@ -1,8 +1,8 @@
-import { getArticles } from "@/lib/queries";
+﻿import { getArticles } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { GuideClient } from "../_components/GuideClient";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export default async function GuidePage() {
   const articles = await getArticles();
@@ -12,7 +12,7 @@ export default async function GuidePage() {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
-      { "@type": "ListItem", "position": 2, "name": "Guide e Novità" },
+      { "@type": "ListItem", "position": 2, "name": "Guide e NovitÃ " },
     ],
   };
 
@@ -21,9 +21,9 @@ export default async function GuidePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <PageHero
-        title="Guide e Novità Fiscali"
-        subtitle="Analisi normative, guide pratiche e aggiornamenti su fiscalità, diritto societario e lavoro redatti dai professionisti dello studio."
-        breadcrumbs={[{ label: "Guide e Novità" }]}
+        title="Guide e NovitÃ  Fiscali"
+        subtitle="Analisi normative, guide pratiche e aggiornamenti su fiscalitÃ , diritto societario e lavoro redatti dai professionisti dello studio."
+        breadcrumbs={[{ label: "Guide e NovitÃ " }]}
         eyebrow="Aggiornamento normativo"
       />
 
@@ -35,3 +35,4 @@ export default async function GuidePage() {
     </div>
   );
 }
+
