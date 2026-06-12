@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock, Linkedin } from "lucide-react";
-import {
-  STUDIO_NAME,
-  STUDIO_PIVA,
-  STUDIO_EMAIL,
-  STUDIO_PHONE,
-  STUDIO_ADDRESS,
-  STUDIO_HOURS,
-} from "@/data/mockData";
+
+interface FooterProps {
+  studioName?: string;
+  piva?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  hours?: string;
+}
 
 const consultingLinks = [
   { label: "Contabilità e Bilancio", href: "/consulenza/contabilita-e-bilancio" },
@@ -25,7 +26,14 @@ const studioLinks = [
   { label: "Contattaci", href: "/contatti" },
 ];
 
-export function Footer() {
+export function Footer({
+  studioName = "Brambilla & Associati",
+  piva = "12345678901",
+  email = "info@brambilla-associati.it",
+  phone = "+39 02 123456",
+  address = "Via Montenapoleone 8, 20121 Milano",
+  hours = "Lun–Ven 9:00–18:00",
+}: FooterProps) {
   return (
     <footer style={{ backgroundColor: "var(--brand-navy-dark)", color: "rgba(255,255,255,0.85)" }}>
       <div className="container" style={{ paddingBlock: "4rem" }}>
@@ -53,27 +61,27 @@ export function Footer() {
               >
                 <span style={{ color: "white", fontSize: "0.875rem", fontWeight: 700 }}>B&A</span>
               </div>
-              <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>{STUDIO_NAME}</span>
+              <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>{studioName}</span>
             </div>
             <p style={{ fontSize: "0.875rem", lineHeight: 1.6, color: "rgba(255,255,255,0.6)", maxWidth: "22rem", marginBottom: "1.5rem" }}>
               Studio professionale con sede a Milano. Consulenza fiscale, societaria e del lavoro per imprenditori, professionisti e imprese.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
-              <a href={`tel:${STUDIO_PHONE}`} className="footer-link" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <a href={`tel:${phone}`} className="footer-link" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <Phone size={14} style={{ flexShrink: 0 }} />
-                {STUDIO_PHONE}
+                {phone}
               </a>
-              <a href={`mailto:${STUDIO_EMAIL}`} className="footer-link" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <a href={`mailto:${email}`} className="footer-link" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <Mail size={14} style={{ flexShrink: 0 }} />
-                {STUDIO_EMAIL}
+                {email}
               </a>
               <span style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", fontSize: "0.875rem", color: "rgba(255,255,255,0.6)" }}>
                 <MapPin size={14} style={{ flexShrink: 0, marginTop: "0.125rem" }} />
-                {STUDIO_ADDRESS}
+                {address}
               </span>
               <span style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.875rem", color: "rgba(255,255,255,0.6)" }}>
                 <Clock size={14} style={{ flexShrink: 0 }} />
-                {STUDIO_HOURS}
+                {hours}
               </span>
             </div>
           </div>
@@ -140,7 +148,7 @@ export function Footer() {
           }}
         >
           <p style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)" }}>
-            © {new Date().getFullYear()} {STUDIO_NAME}. P.IVA {STUDIO_PIVA}. Tutti i diritti riservati.
+            © {new Date().getFullYear()} {studioName}. P.IVA {piva}. Tutti i diritti riservati.
           </p>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             <a

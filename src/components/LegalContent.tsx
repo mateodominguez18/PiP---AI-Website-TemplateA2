@@ -1,5 +1,4 @@
 import { PageHero } from "@/components/PageHero";
-import { STUDIO_NAME, STUDIO_EMAIL, STUDIO_ADDRESS, STUDIO_PIVA } from "@/data/mockData";
 
 interface Section {
   title: string;
@@ -9,7 +8,7 @@ interface Section {
 const privacySections: Section[] = [
   {
     title: "Titolare del trattamento",
-    content: `${STUDIO_NAME} — ${STUDIO_ADDRESS}. P.IVA ${STUDIO_PIVA}. Email: ${STUDIO_EMAIL}.`,
+    content: "",
   },
   {
     title: "Dati raccolti",
@@ -28,7 +27,7 @@ const privacySections: Section[] = [
   },
   {
     title: "Diritti dell'interessato",
-    content: `In qualità di interessato, Lei ha il diritto di: accedere ai propri dati personali (art. 15 GDPR); richiederne la rettifica (art. 16 GDPR); richiederne la cancellazione (art. 17 GDPR); opporsi al trattamento (art. 21 GDPR); richiedere la limitazione del trattamento (art. 18 GDPR); richiedere la portabilità dei dati (art. 20 GDPR). Per esercitare tali diritti, è possibile scrivere a: ${STUDIO_EMAIL}.`,
+    content: "In qualità di interessato, Lei ha il diritto di: accedere ai propri dati personali (art. 15 GDPR); richiederne la rettifica (art. 16 GDPR); richiederne la cancellazione (art. 17 GDPR); opporsi al trattamento (art. 21 GDPR); richiedere la limitazione del trattamento (art. 18 GDPR); richiedere la portabilità dei dati (art. 20 GDPR). Per esercitare tali diritti, è possibile scrivere a: __EMAIL__.",
   },
   {
     title: "Cookie",
@@ -71,11 +70,29 @@ const cookieSections: Section[] = [
 
 interface LegalContentProps {
   type: "privacy" | "cookie";
+  studioName?: string;
+  email?: string;
+  address?: string;
+  piva?: string;
 }
 
-export function LegalContent({ type }: LegalContentProps) {
+export function LegalContent({
+  type,
+  studioName = "Brambilla & Associati",
+  email = "info@brambilla-associati.it",
+  address = "Via Montenapoleone 8, 20121 Milano",
+  piva = "12345678901",
+}: LegalContentProps) {
   const isPrivacy = type === "privacy";
-  const sections = isPrivacy ? privacySections : cookieSections;
+  const sections = isPrivacy
+    ? privacySections.map((s, i) =>
+        i === 0
+          ? { ...s, content: `${studioName} — ${address}. P.IVA ${piva}. Email: ${email}.` }
+          : i === 4
+          ? { ...s, content: s.content.replace("__EMAIL__", email) }
+          : s
+      )
+    : cookieSections;
   const title = isPrivacy ? "Privacy Policy" : "Cookie Policy";
   const subtitle = isPrivacy
     ? "Informativa sul trattamento dei dati personali ai sensi del Regolamento UE 2016/679 (GDPR) e del D.Lgs. 196/2003."
@@ -141,7 +158,7 @@ export function LegalContent({ type }: LegalContentProps) {
 
           <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", textAlign: "center", marginTop: "2rem" }}>
             Per qualsiasi informazione relativa al trattamento dei dati personali, contattare:{" "}
-            <a href={`mailto:${STUDIO_EMAIL}`} style={{ color: "var(--brand-navy)" }}>{STUDIO_EMAIL}</a>
+            <a href={`mailto:${email}`} style={{ color: "var(--brand-navy)" }}>{email}</a>
           </p>
         </div>
       </section>

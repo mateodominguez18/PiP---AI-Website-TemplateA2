@@ -4,7 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
-import { STUDIO_NAME, STUDIO_PHONE } from "@/data/mockData";
+interface NavbarProps {
+  studioName?: string;
+  phone?: string;
+}
 
 const navItems = [
   { label: "Consulenza", href: "/consulenza" },
@@ -13,7 +16,7 @@ const navItems = [
   { label: "Team", href: "/team" },
 ];
 
-export function Navbar() {
+export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 123456" }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -62,7 +65,7 @@ export function Navbar() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
               <span style={{ fontWeight: 700, fontSize: "0.9375rem", color: "var(--brand-navy)", letterSpacing: "-0.01em" }}>
-                {STUDIO_NAME}
+                {studioName}
               </span>
               <span style={{ fontSize: "0.6875rem", color: "var(--foreground-muted)", letterSpacing: "0.04em" }}>
                 Dottori Commercialisti
@@ -86,7 +89,7 @@ export function Navbar() {
           {/* Desktop CTA */}
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }} className="hidden-mobile">
             <a
-              href={`tel:${STUDIO_PHONE}`}
+              href={`tel:${phone}`}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -97,7 +100,7 @@ export function Navbar() {
               }}
             >
               <Phone size={14} />
-              {STUDIO_PHONE}
+              {phone}
             </a>
             <Link href="/contatti" className="btn-primary btn-sm">
               Richiedi consulenza

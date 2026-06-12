@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { client } from "@/lib/sanity";
+import { getSiteSettings } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Brambilla & Associati — Dottori Commercialisti Milano",
@@ -36,7 +37,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const theme = await getTheme();
+  const [theme, settings] = await Promise.all([getTheme(), getSiteSettings()]);
 
   const primary = theme?.primaryColor || DEFAULTS.primaryColor;
   const primaryDark = theme?.primaryDarkColor || DEFAULTS.primaryDarkColor;
@@ -71,9 +72,16 @@ export default async function RootLayout({
         <script src="https://embeds.iubenda.com/widgets/e164dbb6-76ee-471a-af39-765056ca77c6.js" async />
       </head>
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Navbar />
+        <Navbar studioName={settings?.studioName} phone={settings?.phone} />
         <main style={{ flex: 1 }}>{children}</main>
-        <Footer />
+        <Footer
+          studioName={settings?.studioName}
+          piva={settings?.piva}
+          email={settings?.email}
+          phone={settings?.phone}
+          address={settings?.address}
+          hours={settings?.hours}
+        />
       </body>
     </html>
   );
