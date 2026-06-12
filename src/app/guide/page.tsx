@@ -12,7 +12,7 @@ export default async function GuidePage() {
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
-      { "@type": "ListItem", "position": 2, "name": "Guide e NovitÃ " },
+      { "@type": "ListItem", "position": 2, "name": "Guide e Novità" },
     ],
   };
 
@@ -21,9 +21,9 @@ export default async function GuidePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <PageHero
-        title="Guide e NovitÃ  Fiscali"
-        subtitle="Analisi normative, guide pratiche e aggiornamenti su fiscalitÃ , diritto societario e lavoro redatti dai professionisti dello studio."
-        breadcrumbs={[{ label: "Guide e NovitÃ " }]}
+        title="Guide e Novità Fiscali"
+        subtitle="Analisi normative, guide pratiche e aggiornamenti su fiscalità, diritto societario e lavoro redatti dai professionisti dello studio."
+        breadcrumbs={[{ label: "Guide e Novità" }]}
         eyebrow="Aggiornamento normativo"
       />
 

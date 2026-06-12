@@ -81,7 +81,7 @@ export default async function TeamPage() {
         <div className="container" style={{ maxWidth: "48rem", textAlign: "center" }}>
           <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>Vuoi entrare nel team?</h2>
           <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--foreground-muted)", marginBottom: "1.75rem" }}>
-            Lo studio Ã¨ sempre alla ricerca di professionisti motivati e con solida preparazione in ambito fiscale, societario o del lavoro. Inviaci il tuo curriculum.
+            Lo studio è sempre alla ricerca di professionisti motivati e con solida preparazione in ambito fiscale, societario o del lavoro. Inviaci il tuo curriculum.
           </p>
           <a href={`mailto:${recruitingEmail}`} className="btn-primary">Invia curriculum <ArrowRight size={15} /></a>
         </div>
