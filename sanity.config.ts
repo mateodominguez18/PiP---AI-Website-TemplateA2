@@ -5,8 +5,8 @@ import { visionTool } from "@sanity/vision";
 export default defineConfig({
   name: "brambilla-associati",
   title: "Brambilla & Associati",
-  projectId: "gnq02fl6",
-  dataset: "production",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
   plugins: [structureTool(), visionTool()],
   schema: {
     types: [],
