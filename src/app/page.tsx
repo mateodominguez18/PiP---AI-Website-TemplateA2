@@ -1,22 +1,13 @@
-"use client";
-
-import React from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Shield,
-  Users,
-  Clock,
-  Award,
-  PhoneCall,
-  Calendar,
-  BookOpen,
-} from "lucide-react";
-import { consultingAreas, taxDeadlines, articles, teamMembers, STUDIO_NAME, STUDIO_PHONE, STUDIO_EMAIL } from "@/data/mockData";
+import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
+import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
+import { HomeContactForm } from "./_components/HomeContactForm";
+import { formatDate } from "@/lib/utils";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brambilla-associati.it";
 
 const differentiators = [
   { icon: BookOpen, title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },
@@ -33,67 +24,66 @@ const trustMetrics = [
   { value: "100%", label: "Assistenza diretta" },
 ];
 
-export default function HomePage() {
-  const upcomingDeadlines = taxDeadlines.slice(0, 5);
+export default async function HomePage() {
+  const [consultingAreas, deadlines, articles, teamMembers, settings] = await Promise.all([
+    getConsultingAreas(),
+    getTaxDeadlines(),
+    getArticles(),
+    getTeamMembers(),
+    getSiteSettings(),
+  ]);
+
+  const upcomingDeadlines = deadlines.slice(0, 5);
   const featuredArticles = articles.slice(0, 3);
   const previewTeam = teamMembers.slice(0, 4);
 
-  const [miniForm, setMiniForm] = React.useState({ nome: "", cognome: "", email: "", service: "", messaggio: "" });
-  const [miniSent, setMiniSent] = React.useState(false);
-  const [miniLoading, setMiniLoading] = React.useState(false);
-  const [miniError, setMiniError] = React.useState("");
+  const phone = settings?.phone || "+39 02 8765 4321";
+  const email = settings?.email || "studio@brambilla-associati.it";
 
-  const handleMiniSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMiniLoading(true);
-    setMiniError("");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...miniForm, source: "homepage" }),
-      });
-      if (!res.ok) throw new Error();
-      setMiniSent(true);
-    } catch {
-      setMiniError("Errore nell'invio. Riprova o contattaci via email.");
-    } finally {
-      setMiniLoading(false);
-    }
+  const accountingServiceSchema = {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "@id": `${SITE_URL}#studio`,
+    "name": settings?.studioName || "Brambilla & Associati",
+    "url": SITE_URL,
+    "telephone": phone,
+    "email": email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Via Montenapoleone 8",
+      "addressLocality": "Milano",
+      "postalCode": "20121",
+      "addressRegion": "MI",
+      "addressCountry": "IT",
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Servizi dello studio",
+      "itemListElement": consultingAreas.map((a) => a.title),
+    },
   };
 
   return (
     <div>
-      {/* Hero */}
-      <section
-        style={{
-          background: `linear-gradient(135deg, var(--brand-navy-dark) 0%, var(--brand-navy) 60%, var(--brand-navy-light) 100%)`,
-          paddingTop: "5rem",
-          paddingBottom: "5rem",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 70% 50%, rgba(42,127,111,0.15) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(accountingServiceSchema) }}
+      />
 
+      {/* Hero */}
+      <section style={{ background: `linear-gradient(135deg, var(--brand-navy-dark) 0%, var(--brand-navy) 60%, var(--brand-navy-light) 100%)`, paddingTop: "5rem", paddingBottom: "5rem", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 70% 50%, rgba(42,127,111,0.15) 0%, transparent 60%)", pointerEvents: "none" }} />
         <div className="container" style={{ position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="hero-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>
-                Studio Professionale · Milano dal 2002
-              </p>
-              <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>
-                Consulenza fiscale e societaria per imprenditori e PMI
-              </h1>
+              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale · Milano dal 2002</p>
+              <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>Consulenza fiscale e societaria per imprenditori e PMI</h1>
               <p style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "rgba(255,255,255,0.72)", marginBottom: "2rem", maxWidth: "32rem" }}>
                 Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.
               </p>
               <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
                 <Link href="/contatti" className="btn-teal">Richiedi una consulenza</Link>
-                <Link href="/consulenza" className="btn-outline">
-                  Le nostre aree
-                  <ArrowRight size={15} />
-                </Link>
+                <Link href="/consulenza" className="btn-outline">Le nostre aree <ArrowRight size={15} /></Link>
               </div>
               <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
                 {["ODCEC Milano", "Revisori Legali MEF", "Consulenti del Lavoro"].map((item) => (
@@ -104,14 +94,9 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-
             <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} className="hero-image-col">
               <div style={{ borderRadius: "1rem", overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
-                <img
-                  src="https://images.unsplash.com/photo-1758518727077-ffb66ffccced?w=800&h=500&fit=crop"
-                  alt="Consulenti professionisti in riunione"
-                  style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }}
-                />
+                <img src="https://images.unsplash.com/photo-1758518727077-ffb66ffccced?w=800&h=500&fit=crop" alt="Consulenti professionisti in riunione" style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: "0.75rem", border: "1px solid rgba(255,255,255,0.12)", overflow: "hidden" }}>
                 {trustMetrics.map((metric, i) => (
@@ -124,13 +109,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        <style>{`
-          @media (max-width: 900px) {
-            .hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
-            .hero-image-col { display: none !important; }
-          }
-        `}</style>
+        <style>{`@media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; } .hero-image-col { display: none !important; } }`}</style>
       </section>
 
       {/* Aree di consulenza */}
@@ -144,15 +123,10 @@ export default function HomePage() {
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
-            {consultingAreas.map((area) => (
-              <ConsultingCard key={area.id} area={area} variant="grid" />
-            ))}
+            {consultingAreas.map((area) => <ConsultingCard key={area._id} area={area} variant="grid" />)}
           </div>
           <div style={{ textAlign: "center" }}>
-            <Link href="/consulenza" className="btn-secondary">
-              Vedi tutte le aree
-              <ArrowRight size={15} />
-            </Link>
+            <Link href="/consulenza" className="btn-secondary">Vedi tutte le aree <ArrowRight size={15} /></Link>
           </div>
         </div>
       </section>
@@ -167,10 +141,7 @@ export default function HomePage() {
               <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "var(--foreground-muted)", marginBottom: "1.5rem" }}>
                 Teniamo traccia di tutti gli adempimenti rilevanti. Il calendario è aggiornato con le principali scadenze per imprese, professionisti e persone fisiche.
               </p>
-              <Link href="/scadenze" className="btn-primary">
-                Calendario completo
-                <ArrowRight size={15} />
-              </Link>
+              <Link href="/scadenze" className="btn-primary">Calendario completo <ArrowRight size={15} /></Link>
             </div>
             <div>
               <div className="card" style={{ overflow: "hidden" }}>
@@ -185,8 +156,8 @@ export default function HomePage() {
                   </thead>
                   <tbody>
                     {upcomingDeadlines.map((d) => (
-                      <tr key={d.id}>
-                        <td><span style={{ fontWeight: 500, color: "var(--foreground-default)", fontSize: "0.875rem" }}>{d.date}</span></td>
+                      <tr key={d._id}>
+                        <td><span style={{ fontWeight: 500, color: "var(--foreground-default)", fontSize: "0.875rem" }}>{formatDate(d.date)}</span></td>
                         <td>
                           <p style={{ fontWeight: 500, fontSize: "0.875rem", color: "var(--foreground-default)", marginBottom: "0.125rem" }}>{d.title}</p>
                           <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)" }}>{d.audience}</p>
@@ -216,15 +187,10 @@ export default function HomePage() {
               <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Aggiornamento normativo</p>
               <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>Guide e Novità fiscali</h2>
             </div>
-            <Link href="/guide" className="btn-secondary" style={{ flexShrink: 0 }}>
-              Tutti gli articoli
-              <ArrowRight size={15} />
-            </Link>
+            <Link href="/guide" className="btn-secondary" style={{ flexShrink: 0 }}>Tutti gli articoli <ArrowRight size={15} /></Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.25rem" }}>
-            {featuredArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} featured />
-            ))}
+            {featuredArticles.map((article) => <ArticleCard key={article._id} article={article} featured />)}
           </div>
         </div>
       </section>
@@ -264,15 +230,10 @@ export default function HomePage() {
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
-            {previewTeam.map((member) => (
-              <TeamCard key={member.id} member={member} compact />
-            ))}
+            {previewTeam.map((member) => <TeamCard key={member._id} member={member} compact />)}
           </div>
           <div style={{ textAlign: "center" }}>
-            <Link href="/team" className="btn-secondary">
-              Conosci il team
-              <ArrowRight size={15} />
-            </Link>
+            <Link href="/team" className="btn-secondary">Conosci il team <ArrowRight size={15} /></Link>
           </div>
         </div>
       </section>
@@ -288,87 +249,29 @@ export default function HomePage() {
                 Raccontaci la tua situazione e un nostro professionista ti contatterà entro 24 ore lavorative per valutare insieme come possiamo assisterti.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <a href={`tel:${STUDIO_PHONE}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
+                <a href={`tel:${phone}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
                   <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "50%", backgroundColor: "var(--action-secondary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <PhoneCall size={16} style={{ color: "var(--brand-navy)" }} />
                   </div>
                   <div>
                     <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>Telefono</p>
-                    <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{STUDIO_PHONE}</p>
+                    <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{phone}</p>
                   </div>
                 </a>
-                <a href={`mailto:${STUDIO_EMAIL}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
+                <a href={`mailto:${email}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
                   <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "50%", backgroundColor: "var(--action-secondary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <Calendar size={16} style={{ color: "var(--brand-navy)" }} />
                   </div>
                   <div>
                     <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>Email</p>
-                    <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{STUDIO_EMAIL}</p>
+                    <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{email}</p>
                   </div>
                 </a>
               </div>
             </div>
-
             <div className="card" style={{ padding: "2rem" }}>
-              <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "1.5rem" }}>
-                Inviaci un messaggio
-              </h3>
-              {miniSent ? (
-                <div style={{ textAlign: "center", padding: "2rem 0" }}>
-                  <div style={{ width: "3rem", height: "3rem", borderRadius: "50%", backgroundColor: "rgba(42,127,111,0.12)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
-                    <CheckCircle2 size={22} style={{ color: "var(--brand-teal)" }} />
-                  </div>
-                  <p style={{ fontWeight: 600, color: "var(--foreground-default)", marginBottom: "0.375rem" }}>Richiesta inviata!</p>
-                  <p style={{ fontSize: "0.875rem", color: "var(--foreground-muted)" }}>Ti contatteremo entro 24 ore lavorative.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleMiniSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.875rem" }}>
-                    <div>
-                      <label className="form-label">Nome *</label>
-                      <input className="form-input" type="text" placeholder="Mario" required value={miniForm.nome} onChange={(e) => setMiniForm({ ...miniForm, nome: e.target.value })} />
-                    </div>
-                    <div>
-                      <label className="form-label">Cognome *</label>
-                      <input className="form-input" type="text" placeholder="Rossi" required value={miniForm.cognome} onChange={(e) => setMiniForm({ ...miniForm, cognome: e.target.value })} />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="form-label">Email *</label>
-                    <input className="form-input" type="email" placeholder="mario.rossi@esempio.it" required value={miniForm.email} onChange={(e) => setMiniForm({ ...miniForm, email: e.target.value })} />
-                  </div>
-                  <div>
-                    <label className="form-label">Tipo di richiesta</label>
-                    <select className="form-select" value={miniForm.service} onChange={(e) => setMiniForm({ ...miniForm, service: e.target.value })}>
-                      <option value="">Seleziona...</option>
-                      <option>Contabilità e bilancio</option>
-                      <option>Consulenza fiscale</option>
-                      <option>Diritto societario</option>
-                      <option>Lavoro e paghe</option>
-                      <option>Operazioni straordinarie</option>
-                      <option>Fiscalità internazionale</option>
-                      <option>Altro</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="form-label">Messaggio *</label>
-                    <textarea className="form-textarea" placeholder="Descrivici brevemente la tua situazione..." required value={miniForm.messaggio} onChange={(e) => setMiniForm({ ...miniForm, messaggio: e.target.value })} />
-                  </div>
-                  {miniError && (
-                    <p style={{ fontSize: "0.8125rem", color: "var(--action-destructive)", padding: "0.625rem 0.875rem", backgroundColor: "#fff0f3", borderRadius: "0.5rem", border: "1px solid rgba(212,24,61,0.2)" }}>
-                      {miniError}
-                    </p>
-                  )}
-                  <button type="submit" disabled={miniLoading} className="btn-primary" style={{ width: "100%", justifyContent: "center", marginTop: "0.25rem", opacity: miniLoading ? 0.7 : 1 }}>
-                    {miniLoading ? "Invio in corso…" : "Invia richiesta"}
-                    {!miniLoading && <ArrowRight size={15} />}
-                  </button>
-                  <p style={{ fontSize: "0.75rem", color: "var(--foreground-muted)", textAlign: "center" }}>
-                    I tuoi dati saranno trattati nel rispetto della{" "}
-                    <Link href="/privacy" style={{ color: "var(--brand-navy)" }}>Privacy Policy</Link>.
-                  </p>
-                </form>
-              )}
+              <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "1.5rem" }}>Inviaci un messaggio</h3>
+              <HomeContactForm />
             </div>
           </div>
         </div>
