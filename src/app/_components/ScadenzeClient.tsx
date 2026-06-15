@@ -22,6 +22,7 @@ export function ScadenzeClient({ deadlines }: { deadlines: SanityTaxDeadline[] }
       d.title.toLowerCase().includes(search.toLowerCase()) ||
       (d.description ?? "").toLowerCase().includes(search.toLowerCase()) ||
       (d.audience ?? "").toLowerCase().includes(search.toLowerCase());
+    // Sanity stores month as "Giugno 2025"; filter options are just "Giugno" — startsWith matches without caring about the year.
     const matchMonth = selectedMonth === "Tutti" || (d.month ?? "").startsWith(selectedMonth);
     const matchCategory = selectedCategory === "Tutte" || d.category === selectedCategory;
     const matchPriority = selectedPriority === "Tutte" || d.priority === selectedPriority;

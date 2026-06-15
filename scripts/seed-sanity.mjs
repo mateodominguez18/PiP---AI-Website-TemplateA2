@@ -42,6 +42,8 @@ async function deleteExisting(type) {
 
 async function seedSiteSettings() {
   console.log("\n📋 Seeding siteSettings...");
+  // createOrReplace with a fixed _id keeps siteSettings as a singleton — re-running the seed
+  // updates the existing document instead of creating duplicates.
   await client.createOrReplace({
     _id: "siteSettings",
     _type: "siteSettings",

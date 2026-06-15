@@ -20,6 +20,7 @@ const DEFAULTS = {
   fontFamily: "Inter",
 };
 
+// Falls back to null on error so the site still renders with DEFAULTS if Sanity is unreachable.
 async function getTheme() {
   try {
     return await client.fetch(
@@ -67,6 +68,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={fontUrl} rel="stylesheet" />
+        {/* Inline style because the values come from Sanity at request time — they can't live in a static CSS file. */}
         <style dangerouslySetInnerHTML={{ __html: cssOverride }} />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://embeds.iubenda.com/widgets/e164dbb6-76ee-471a-af39-765056ca77c6.js" async />

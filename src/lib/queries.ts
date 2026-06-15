@@ -7,8 +7,10 @@ import type {
   SanitySettings,
 } from "./types";
 
+// Content is cached for 60s so Sanity edits appear quickly without hammering the API on every request.
 const opts = { next: { revalidate: 60 } };
 
+// "imageUrl": image.asset->url resolves the Sanity asset reference inline so components receive a plain URL string.
 const TEAM_FIELDS = `_id, name, title, role, bio, bioExtended, education, specializations, linkedIn, "imageUrl": image.asset->url, order`;
 const AREA_FIELDS = `_id, title, "slug": slug.current, icon, shortDescription, fullDescription, activities, benefits, targetClients, faq, order`;
 const DEADLINE_FIELDS = `_id, title, description, date, month, category, priority, audience`;
@@ -55,6 +57,7 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
   );
 }
 
+// no-store so generateStaticParams always sees newly published articles/areas — a cached list would miss them until revalidation.
 export async function getArticleSlugs(): Promise<string[]> {
   const results: { slug: string }[] = await client.fetch(
     `*[_type == "article" && defined(slug.current)] { "slug": slug.current }`,
@@ -64,6 +67,7 @@ export async function getArticleSlugs(): Promise<string[]> {
   return results.map((r) => r.slug);
 }
 
+// Same no-store rationale as getArticleSlugs.
 export async function getConsultingAreaSlugs(): Promise<string[]> {
   const results: { slug: string }[] = await client.fetch(
     `*[_type == "consultingArea" && defined(slug.current)] { "slug": slug.current }`,
