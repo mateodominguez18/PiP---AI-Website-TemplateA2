@@ -48,14 +48,8 @@ export default async function HomePage() {
     "url": SITE_URL,
     "telephone": phone,
     "email": email,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Via Montenapoleone 8",
-      "addressLocality": "Milano",
-      "postalCode": "20121",
-      "addressRegion": "MI",
-      "addressCountry": "IT",
-    },
+    // address is taken from Sanity so it stays in sync when the studio edits it; schema.org allows a plain string here.
+    "address": settings?.address || "Via Montenapoleone 8, 20121 Milano (MI)",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Servizi dello studio",
@@ -76,7 +70,7 @@ export default async function HomePage() {
         <div className="container" style={{ position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="hero-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale Â· Milano dal 2002</p>
+              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale · Milano dal 2002</p>
               <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>Consulenza fiscale e societaria per imprenditori e PMI</h1>
               <p style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "rgba(255,255,255,0.72)", marginBottom: "2rem", maxWidth: "32rem" }}>
                 Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.

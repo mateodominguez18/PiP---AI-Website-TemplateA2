@@ -55,7 +55,7 @@ export default async function TeamPage() {
         <div className="container">
           <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
             {teamMembers.map((member, idx) => (
-              <div key={member._id} className="card" style={{ overflow: "hidden", display: "grid", gridTemplateColumns: idx % 2 === 0 ? "22rem 1fr" : "1fr 22rem" }}>
+              <div key={member._id} className="card team-card-full" style={{ overflow: "hidden", display: "grid", gridTemplateColumns: idx % 2 === 0 ? "22rem 1fr" : "1fr 22rem" }}>
                 {idx % 2 === 0 ? (
                   <>
                     <div style={{ height: "100%", minHeight: "22rem" }}>

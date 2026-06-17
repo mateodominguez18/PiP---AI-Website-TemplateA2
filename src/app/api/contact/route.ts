@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
+// Form input is untrusted: escape it before interpolating into the email HTML to prevent injection.
+function escapeHtml(value: string): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function buildHtml(data: Record<string, string>): string {
   const rows = [
     ["Nome", `${data.nome ?? ""} ${data.cognome ?? ""}`.trim()],
@@ -16,7 +26,7 @@ function buildHtml(data: Record<string, string>): string {
       ([label, value]) => `
       <tr>
         <td style="padding:10px 16px;font-size:13px;color:#6B7280;white-space:nowrap;border-bottom:1px solid #E5E7EB;">${label}</td>
-        <td style="padding:10px 16px;font-size:14px;color:#111827;border-bottom:1px solid #E5E7EB;">${value}</td>
+        <td style="padding:10px 16px;font-size:14px;color:#111827;border-bottom:1px solid #E5E7EB;">${escapeHtml(value)}</td>
       </tr>`
     )
     .join("");
