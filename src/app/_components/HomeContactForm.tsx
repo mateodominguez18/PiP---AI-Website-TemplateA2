@@ -1,3 +1,7 @@
+// Client component. The homepage (page.tsx) is a server component, but a form needs
+// browser state (field values, loading, success), so the form lives here and is
+// imported into the page. This is the recurring pattern across the app: server
+// component fetches data, client component handles interactivity.
 "use client";
 
 import React from "react";

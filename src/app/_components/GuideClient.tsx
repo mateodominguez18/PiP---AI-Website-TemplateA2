@@ -1,3 +1,6 @@
+// Client component for /guide. Receives the full article list from the server
+// component and handles the in-browser search + category/tag filtering. Categories
+// and tags are derived from the articles themselves, not hardcoded.
 "use client";
 
 import { useState } from "react";

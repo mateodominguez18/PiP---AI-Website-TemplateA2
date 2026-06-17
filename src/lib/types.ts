@@ -1,3 +1,7 @@
+// TypeScript shapes for the data returned by the GROQ queries in queries.ts.
+// One interface per Sanity document type. Fields are optional (?) wherever the
+// CMS allows the editor to leave them empty.
+
 export interface SanityTeamMember {
   _id: string;
   name: string;

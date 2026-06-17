@@ -1,3 +1,6 @@
+// API route that backs both contact forms (homepage + /contatti). It receives the
+// form POST, builds an HTML email and sends it through Brevo's transactional API.
+// All Brevo credentials and the recipient address come from environment variables.
 import { NextRequest, NextResponse } from "next/server";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";

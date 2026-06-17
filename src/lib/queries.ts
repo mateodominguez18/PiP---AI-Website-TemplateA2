@@ -1,3 +1,6 @@
+// Central data layer: every GROQ query the site runs lives here. Pages call these
+// functions from server components and pass the result down as props — no component
+// fetches Sanity directly. The FIELDS constants are shared projections reused across queries.
 import { client } from "./sanity";
 import type {
   SanityTeamMember,

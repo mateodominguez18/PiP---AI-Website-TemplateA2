@@ -1,3 +1,6 @@
+// Client component for /contatti: the full contact form plus the studio's contact
+// details. Split out so the page can stay a server component that fetches the
+// studio settings (phone, email, address) from Sanity and passes them in as props.
 "use client";
 
 import React, { useState } from "react";

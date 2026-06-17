@@ -1,3 +1,6 @@
+// Client component for /scadenze. The page server-fetches the deadlines and passes
+// them in as props; this component owns the interactive filtering (search + month +
+// category + priority) and groups the results by month for display.
 "use client";
 
 import { useState } from "react";

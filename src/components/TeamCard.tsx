@@ -1,6 +1,9 @@
 import { Linkedin } from "lucide-react";
 import type { SanityTeamMember } from "@/lib/types";
 
+// Card for a team member. `compact` renders the centered avatar card used in grids;
+// the default renders a horizontal row. The LinkedIn link is hidden when the stored
+// value is "#" (the seed placeholder), so empty links never render.
 interface TeamCardProps {
   member: SanityTeamMember;
   compact?: boolean;

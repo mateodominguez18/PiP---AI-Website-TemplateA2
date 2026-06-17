@@ -1,3 +1,5 @@
+// Date helpers. Sanity stores dates as ISO strings ("2025-06-16"); these turn
+// them into the Italian display formats used across the site.
 const MONTHS_ABB = ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
 const MONTHS_FULL = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 

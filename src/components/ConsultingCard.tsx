@@ -3,6 +3,9 @@ import Link from "next/link";
 import { BookOpen, FileText, Building2, Users, TrendingUp, Globe, ArrowRight } from "lucide-react";
 import type { SanityConsultingArea } from "@/lib/types";
 
+// Card for a consulting area. `variant` switches between the vertical grid card and
+// the horizontal list row. Sanity stores the icon as a string name ("BookOpen"), so
+// this map turns that string into the actual lucide icon component (FileText if unknown).
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; style?: React.CSSProperties }>> = {
   BookOpen, FileText, Building2, Users, TrendingUp, Globe,
 };
