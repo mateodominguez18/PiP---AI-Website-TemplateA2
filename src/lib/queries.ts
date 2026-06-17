@@ -54,7 +54,7 @@ export async function getArticle(slug: string): Promise<SanityArticle | null> {
 
 export async function getSiteSettings(): Promise<SanitySettings | null> {
   return client.fetch(
-    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, logoUrl }`,
+    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, "logoUrl": logo.asset->url }`,
     {},
     opts
   );

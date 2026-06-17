@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, User, Tag, ArrowRight } from "lucide-react";
 import { PortableText } from "@portabletext/react";
-import { getArticle, getArticles, getArticleSlugs } from "@/lib/queries";
+import { getArticle, getArticles, getArticleSlugs, getSiteSettings } from "@/lib/queries";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArticleCard } from "@/components/ArticleCard";
 import { formatDateFull } from "@/lib/utils";
@@ -19,8 +19,8 @@ function slugify(name: string) {
 // the brand suffix is omitted to avoid an over-length, truncated title tag.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await getArticle(slug);
-  if (!article) return { title: "Articolo non trovato – Brambilla & Associati" };
+  const [article, settings] = await Promise.all([getArticle(slug), getSiteSettings()]);
+  if (!article) return { title: `Articolo non trovato – ${settings?.studioName || "Brambilla & Associati"}` };
 
   return {
     title: article.title,

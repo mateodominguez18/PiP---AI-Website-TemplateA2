@@ -79,7 +79,7 @@ export default async function RootLayout({
         <script src="https://embeds.iubenda.com/widgets/e164dbb6-76ee-471a-af39-765056ca77c6.js" async />
       </head>
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Navbar studioName={settings?.studioName} phone={settings?.phone} />
+        <Navbar studioName={settings?.studioName} phone={settings?.phone} logoUrl={settings?.logoUrl} />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer
           studioName={settings?.studioName}
@@ -88,6 +88,7 @@ export default async function RootLayout({
           phone={settings?.phone}
           address={settings?.address}
           hours={settings?.hours}
+          logoUrl={settings?.logoUrl}
         />
       </body>
     </html>

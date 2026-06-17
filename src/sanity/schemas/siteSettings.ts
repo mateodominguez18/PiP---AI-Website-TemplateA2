@@ -12,6 +12,13 @@ export const siteSettings = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "logo",
+      title: "Logo",
+      type: "image",
+      description: "Logo dello studio. Se vuoto, viene mostrata la sigla ricavata dal nome.",
+      options: { hotspot: true },
+    }),
+    defineField({
       name: "tagline",
       title: "Tagline",
       type: "string",

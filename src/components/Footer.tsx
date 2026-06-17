@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock, Linkedin } from "lucide-react";
+import { initialsFromName } from "@/lib/utils";
 
 interface FooterProps {
   studioName?: string;
@@ -8,6 +9,7 @@ interface FooterProps {
   phone?: string;
   address?: string;
   hours?: string;
+  logoUrl?: string;
 }
 
 const consultingLinks = [
@@ -33,6 +35,7 @@ export function Footer({
   phone = "+39 02 123456",
   address = "Via Montenapoleone 8, 20121 Milano",
   hours = "Lun–Ven 9:00–18:00",
+  logoUrl,
 }: FooterProps) {
   return (
     <footer style={{ backgroundColor: "var(--brand-navy-dark)", color: "rgba(255,255,255,0.85)" }}>
@@ -47,20 +50,29 @@ export function Footer({
           {/* Studio info */}
           <div style={{ gridColumn: "span 2" }} className="footer-wide-col">
             <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginBottom: "1rem" }}>
-              <div
-                style={{
-                  width: "2rem",
-                  height: "2rem",
-                  borderRadius: "0.375rem",
-                  backgroundColor: "var(--brand-teal)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <span style={{ color: "white", fontSize: "0.875rem", fontWeight: 700 }}>B&A</span>
-              </div>
+              {/* Logo: uploaded image from Sanity, or initials derived from the studio name */}
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt={studioName}
+                  style={{ height: "2rem", width: "auto", maxWidth: "8rem", objectFit: "contain", display: "block", flexShrink: 0 }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "2rem",
+                    height: "2rem",
+                    borderRadius: "0.375rem",
+                    backgroundColor: "var(--brand-teal)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <span style={{ color: "white", fontSize: "0.875rem", fontWeight: 700 }}>{initialsFromName(studioName)}</span>
+                </div>
+              )}
               <span style={{ color: "white", fontWeight: 700, fontSize: "1rem" }}>{studioName}</span>
             </div>
             <p style={{ fontSize: "0.875rem", lineHeight: 1.6, color: "rgba(255,255,255,0.6)", maxWidth: "22rem", marginBottom: "1.5rem" }}>

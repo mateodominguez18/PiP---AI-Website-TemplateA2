@@ -14,3 +14,11 @@ export function formatDateFull(isoDate: string): string {
   const [year, month, day] = isoDate.split("-");
   return `${parseInt(day)} ${MONTHS_FULL[parseInt(month) - 1]} ${year}`;
 }
+
+// Fallback logo mark: builds initials from the studio name when no logo image is set.
+// "Brambilla & Associati" -> "B&A", "Rossi & Partners" -> "R&P".
+export function initialsFromName(name: string): string {
+  const words = (name ?? "").trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return "—";
+  return words.map((w) => (w === "&" ? "&" : w[0])).join("").toUpperCase().slice(0, 5);
+}

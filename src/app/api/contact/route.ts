@@ -2,6 +2,7 @@
 // form POST, builds an HTML email and sends it through Brevo's transactional API.
 // All Brevo credentials and the recipient address come from environment variables.
 import { NextRequest, NextResponse } from "next/server";
+import { getSiteSettings } from "@/lib/queries";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
@@ -15,7 +16,7 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-function buildHtml(data: Record<string, string>): string {
+function buildHtml(data: Record<string, string>, studioName: string): string {
   const rows = [
     ["Nome", `${data.nome ?? ""} ${data.cognome ?? ""}`.trim()],
     ["Email", data.email],
@@ -43,7 +44,7 @@ function buildHtml(data: Record<string, string>): string {
       <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.07);">
         <tr>
           <td style="background:linear-gradient(135deg,#0F2740,#1B3A5C);padding:28px 32px;">
-            <p style="margin:0;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);">Brambilla &amp; Associati</p>
+            <p style="margin:0;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);">${escapeHtml(studioName)}</p>
             <h1 style="margin:6px 0 0;font-size:20px;color:#ffffff;font-weight:600;">Nuova richiesta di contatto</h1>
           </td>
         </tr>
@@ -54,7 +55,7 @@ function buildHtml(data: Record<string, string>): string {
         </tr>
         <tr>
           <td style="padding:20px 32px;background:#F9FAFB;border-top:1px solid #E5E7EB;">
-            <p style="margin:0;font-size:12px;color:#9CA3AF;">Questa email è stata generata automaticamente dal sito brambilla-associati.it</p>
+            <p style="margin:0;font-size:12px;color:#9CA3AF;">Questa email è stata generata automaticamente dal modulo di contatto di ${escapeHtml(studioName)}.</p>
           </td>
         </tr>
       </table>
@@ -73,6 +74,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Campi obbligatori mancanti." }, { status: 400 });
     }
 
+    // Studio name comes from Sanity so the email branding follows a CMS rename.
+    const settings = await getSiteSettings();
+    const studioName = settings?.studioName || "Brambilla & Associati";
+
     const payload = {
       sender: {
         name: process.env.BREVO_SENDER_NAME,
@@ -81,7 +86,7 @@ export async function POST(req: NextRequest) {
       to: [{ email: process.env.BREVO_RECIPIENT_EMAIL ?? process.env.BREVO_SENDER_EMAIL }],
       replyTo: { email, name: `${nome} ${cognome ?? ""}`.trim() },
       subject: `Nuova richiesta — ${nome} ${cognome ?? ""}`.trim(),
-      htmlContent: buildHtml({ nome, cognome, email, telefono, clientType, service, messaggio, source }),
+      htmlContent: buildHtml({ nome, cognome, email, telefono, clientType, service, messaggio, source }, studioName),
     };
 
     const res = await fetch(BREVO_API_URL, {

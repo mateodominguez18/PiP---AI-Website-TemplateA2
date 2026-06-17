@@ -3,10 +3,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, ArrowRight, BookOpen, FileText, Building2, Users, TrendingUp, Globe } from "lucide-react";
-import { getConsultingArea, getConsultingAreas, getConsultingAreaSlugs } from "@/lib/queries";
+import { getConsultingArea, getConsultingAreas, getConsultingAreaSlugs, getSiteSettings } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ConsultingCard } from "@/components/ConsultingCard";
+import { buildTitle, cityFromAddress } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
@@ -19,20 +20,19 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-// Per-area SEO built from Sanity. Drops " a Milano" if the full title would exceed
-// Google's ~60-char limit, so longer area names still render a clean title.
+// Per-area SEO built from Sanity. Studio name and city come from siteSettings;
+// buildTitle drops " a <city>" if the full title would exceed Google's ~60-char limit.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const area = await getConsultingArea(slug);
-  if (!area) return { title: "Area non trovata – Brambilla & Associati" };
+  const [area, settings] = await Promise.all([getConsultingArea(slug), getSiteSettings()]);
+  const studio = settings?.studioName || "Brambilla & Associati";
+  if (!area) return { title: `Area non trovata – ${studio}` };
 
-  const withCity = `${area.title} a Milano – Brambilla & Associati`;
-  const title = withCity.length <= 60 ? withCity : `${area.title} – Brambilla & Associati`;
-
+  const city = cityFromAddress(settings?.address);
   return {
-    title,
+    title: buildTitle(area.title, studio, city),
     description: (area.shortDescription ?? "").slice(0, 158) ||
-      `Consulenza in ${area.title.toLowerCase()} a Milano dello studio Brambilla & Associati.`,
+      `Consulenza in ${area.title.toLowerCase()} a ${city} dello studio ${studio}.`,
     alternates: { canonical: `/consulenza/${slug}` },
   };
 }

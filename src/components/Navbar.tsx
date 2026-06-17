@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
+import { initialsFromName } from "@/lib/utils";
+
 interface NavbarProps {
   studioName?: string;
   phone?: string;
+  logoUrl?: string;
 }
 
 const navItems = [
@@ -16,7 +19,7 @@ const navItems = [
   { label: "Team", href: "/team" },
 ];
 
-export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 123456" }: NavbarProps) {
+export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 123456", logoUrl }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -45,24 +48,32 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
     >
       <div className="container">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem" }}>
-          {/* Logo */}
+          {/* Logo: uploaded image from Sanity, or initials derived from the studio name */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.625rem" }}>
-            <div
-              style={{
-                width: "2rem",
-                height: "2rem",
-                borderRadius: "0.375rem",
-                backgroundColor: "var(--brand-navy)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <span style={{ color: "white", fontSize: "0.875rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
-                B&A
-              </span>
-            </div>
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={studioName}
+                style={{ height: "2rem", width: "auto", maxWidth: "8rem", objectFit: "contain", display: "block", flexShrink: 0 }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "2rem",
+                  height: "2rem",
+                  borderRadius: "0.375rem",
+                  backgroundColor: "var(--brand-navy)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <span style={{ color: "white", fontSize: "0.875rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+                  {initialsFromName(studioName)}
+                </span>
+              </div>
+            )}
             <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
               <span style={{ fontWeight: 700, fontSize: "0.9375rem", color: "var(--brand-navy)", letterSpacing: "-0.01em" }}>
                 {studioName}
