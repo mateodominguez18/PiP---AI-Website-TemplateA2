@@ -1,9 +1,23 @@
-﻿import { ArrowRight, CheckCircle2, Linkedin } from "lucide-react";
+﻿import type { Metadata } from "next";
+import { ArrowRight, CheckCircle2, Linkedin } from "lucide-react";
 import { getTeamMembers, getSiteSettings } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import type { SanityTeamMember } from "@/lib/types";
+import { buildTitle, cityFromAddress } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const studio = settings?.studioName || "Brambilla & Associati";
+  const city = cityFromAddress(settings?.address);
+  return {
+    title: buildTitle("Il Team di Dottori Commercialisti", studio),
+    description: `Conosci i dottori commercialisti e i consulenti dello studio ${studio} di ${city}: esperti in fiscalità, diritto societario e del lavoro.`,
+    alternates: { canonical: "/team" },
+  };
+}
+
 const PLACEHOLDER = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face";
 
 function slugify(name: string) {

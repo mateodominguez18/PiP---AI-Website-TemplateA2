@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, ArrowRight, BookOpen, FileText, Building2, Users, TrendingUp, Globe } from "lucide-react";
@@ -16,6 +17,24 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?:
 export async function generateStaticParams() {
   const slugs = await getConsultingAreaSlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+// Per-area SEO built from Sanity. Drops " a Milano" if the full title would exceed
+// Google's ~60-char limit, so longer area names still render a clean title.
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const area = await getConsultingArea(slug);
+  if (!area) return { title: "Area non trovata – Brambilla & Associati" };
+
+  const withCity = `${area.title} a Milano – Brambilla & Associati`;
+  const title = withCity.length <= 60 ? withCity : `${area.title} – Brambilla & Associati`;
+
+  return {
+    title,
+    description: (area.shortDescription ?? "").slice(0, 158) ||
+      `Consulenza in ${area.title.toLowerCase()} a Milano dello studio Brambilla & Associati.`,
+    alternates: { canonical: `/consulenza/${slug}` },
+  };
 }
 
 export default async function ConsulenzaDetailPage({ params }: { params: Promise<{ slug: string }> }) {

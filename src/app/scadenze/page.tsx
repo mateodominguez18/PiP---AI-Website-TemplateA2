@@ -1,8 +1,21 @@
-﻿import { getTaxDeadlines } from "@/lib/queries";
+﻿import type { Metadata } from "next";
+import { getTaxDeadlines, getSiteSettings } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ScadenzeClient } from "../_components/ScadenzeClient";
+import { buildTitle } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const studio = settings?.studioName || "Brambilla & Associati";
+  return {
+    title: buildTitle("Scadenze Fiscali 2025: Calendario", studio),
+    description:
+      "Calendario completo delle scadenze fiscali 2025: adempimenti, versamenti e dichiarazioni per imprese, professionisti e privati, aggiornato dallo studio.",
+    alternates: { canonical: "/scadenze" },
+  };
+}
 
 export default async function ScadenzePage() {
   const deadlines = await getTaxDeadlines();

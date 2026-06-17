@@ -1,10 +1,23 @@
-﻿import Link from "next/link";
+﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getConsultingAreas } from "@/lib/queries";
+import { getConsultingAreas, getSiteSettings } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ConsultingCard } from "@/components/ConsultingCard";
+import { buildTitle, cityFromAddress } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const studio = settings?.studioName || "Brambilla & Associati";
+  const city = cityFromAddress(settings?.address);
+  return {
+    title: buildTitle("Consulenza Fiscale", studio, city),
+    description: `Consulenza fiscale, societaria, del lavoro e operazioni straordinarie a ${city}. Assistenza specializzata per imprese e professionisti con un referente dedicato.`,
+    alternates: { canonical: "/consulenza" },
+  };
+}
 
 export default async function ConsulenzaPage() {
   const consultingAreas = await getConsultingAreas();

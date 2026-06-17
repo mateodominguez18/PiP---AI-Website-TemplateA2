@@ -5,8 +5,13 @@ import { Footer } from "@/components/Footer";
 import { client } from "@/lib/sanity";
 import { getSiteSettings } from "@/lib/queries";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+// Default/fallback SEO. metadataBase lets the per-page `alternates.canonical` paths
+// (e.g. "/team") resolve to absolute URLs. Each page overrides title/description.
 export const metadata: Metadata = {
-  title: "Brambilla & Associati — Dottori Commercialisti Milano",
+  metadataBase: new URL(SITE_URL),
+  title: "Brambilla & Associati — Dottori Commercialisti a Milano",
   description:
     "Studio professionale con sede a Milano. Consulenza fiscale, societaria e del lavoro per imprenditori, professionisti e imprese.",
 };

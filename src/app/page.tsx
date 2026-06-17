@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
 import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
@@ -6,8 +7,22 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
 import { HomeContactForm } from "./_components/HomeContactForm";
 import { formatDate } from "@/lib/utils";
+import { buildTitle, cityFromAddress } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+// Page-specific SEO. Studio name and city come from Sanity (siteSettings), so the
+// hand-written copy below updates automatically when the studio is renamed/relocated.
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const studio = settings?.studioName || "Brambilla & Associati";
+  const city = cityFromAddress(settings?.address);
+  return {
+    title: buildTitle("Studio Commercialista", studio, city),
+    description: `Studio di dottori commercialisti a ${city}: consulenza fiscale, societaria e del lavoro per imprese, professionisti e privati. Richiedi una prima consulenza.`,
+    alternates: { canonical: "/" },
+  };
+}
 
 const differentiators = [
   { icon: BookOpen, title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },

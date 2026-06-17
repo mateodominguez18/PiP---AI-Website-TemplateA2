@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, User, Tag, ArrowRight } from "lucide-react";
@@ -12,6 +13,20 @@ const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1554224154-26032ffc0d
 
 function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
+
+// Per-article SEO from Sanity. Article titles are already long and keyword-rich, so
+// the brand suffix is omitted to avoid an over-length, truncated title tag.
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+  if (!article) return { title: "Articolo non trovato – Brambilla & Associati" };
+
+  return {
+    title: article.title,
+    description: (article.excerpt ?? "").slice(0, 158) || undefined,
+    alternates: { canonical: `/guide/${slug}` },
+  };
 }
 
 const ptComponents = {
