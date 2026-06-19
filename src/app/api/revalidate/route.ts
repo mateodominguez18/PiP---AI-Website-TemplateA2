@@ -21,3 +21,10 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ revalidated: true, now: Date.now() });
 }
+
+// TEMP diagnostic — confirms whether the secret env var reached this deployment
+// (reports only presence and length, never the value). Remove after verifying.
+export async function GET() {
+  const s = process.env.SANITY_REVALIDATE_SECRET;
+  return NextResponse.json({ secretConfigured: Boolean(s), secretLength: s ? s.length : 0 });
+}
