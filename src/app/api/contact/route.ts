@@ -1,12 +1,12 @@
-// API route that backs both contact forms (homepage + /contatti). It receives the
-// form POST, builds an HTML email and sends it through Brevo's transactional API.
-// All Brevo credentials and the recipient address come from environment variables.
+// Rotta API che gestisce entrambi i moduli di contatto (homepage + /contatti). Riceve
+// il POST del modulo, costruisce un'email HTML e la invia tramite l'API transazionale di
+// Brevo. Tutte le credenziali Brevo e l'indirizzo destinatario vengono dalle variabili d'ambiente.
 import { NextRequest, NextResponse } from "next/server";
 import { getSiteSettings } from "@/lib/queries";
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
-// Form input is untrusted: escape it before interpolating into the email HTML to prevent injection.
+// L'input del modulo non è attendibile: va sottoposto a escape prima di inserirlo nell'HTML dell'email per evitare iniezioni.
 function escapeHtml(value: string): string {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Campi obbligatori mancanti." }, { status: 400 });
     }
 
-    // Studio name comes from Sanity so the email branding follows a CMS rename.
+    // Il nome dello studio viene da Sanity così il branding dell'email segue un'eventuale rinomina nel CMS.
     const settings = await getSiteSettings();
     const studioName = settings?.studioName || "Brambilla & Associati";
 

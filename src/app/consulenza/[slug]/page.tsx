@@ -20,8 +20,8 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-// Per-area SEO built from Sanity. Studio name and city come from siteSettings;
-// buildTitle drops " a <city>" if the full title would exceed Google's ~60-char limit.
+// SEO della singola area, dai dati di Sanity. Nome studio e città vengono da siteSettings;
+// buildTitle toglie " a <città>" se il titolo completo supererebbe il limite di ~60 caratteri di Google.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const [area, settings] = await Promise.all([getConsultingArea(slug), getSiteSettings()]);

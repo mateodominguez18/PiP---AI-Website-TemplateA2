@@ -1,6 +1,6 @@
-// Client component for /contatti: the full contact form plus the studio's contact
-// details. Split out so the page can stay a server component that fetches the
-// studio settings (phone, email, address) from Sanity and passes them in as props.
+// Client component per /contatti: il modulo di contatto completo più i dati di contatto
+// dello studio. Estratto a parte così la pagina può restare un server component che recupera
+// le impostazioni dello studio (telefono, email, indirizzo) da Sanity e le passa come props.
 "use client";
 
 import React, { useState } from "react";
@@ -74,7 +74,7 @@ export function ContattiClient({
       style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "4rem", alignItems: "start" }}
       className="contact-layout"
     >
-      {/* Contact info */}
+      {/* Dati di contatto */}
       <div>
         <h2 style={{ fontSize: "1.25rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "1.75rem" }}>
           Informazioni di contatto
@@ -153,7 +153,7 @@ export function ContattiClient({
         </div>
       </div>
 
-      {/* Form */}
+      {/* Modulo */}
       <div className="card" style={{ padding: "2.5rem" }}>
         {sent ? (
           <div style={{ textAlign: "center", padding: "3rem 1rem" }}>

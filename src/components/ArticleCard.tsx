@@ -3,9 +3,9 @@ import { Clock, ArrowRight } from "lucide-react";
 import type { SanityArticle } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-// Card for an article. `featured` renders the large image-on-top card used in grids;
-// the default renders a compact thumbnail row used in sidebars. Falls back to a
-// placeholder image when the article has no cover image in Sanity.
+// Scheda di un articolo. `featured` mostra la card grande con immagine in alto usata nelle
+// griglie; altrimenti mostra una riga compatta con miniatura usata nelle sidebar. Se l'articolo
+// non ha un'immagine di copertina in Sanity, usa un'immagine segnaposto.
 interface ArticleCardProps {
   article: SanityArticle;
   featured?: boolean;

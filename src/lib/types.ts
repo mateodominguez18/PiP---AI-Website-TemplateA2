@@ -1,6 +1,6 @@
-// TypeScript shapes for the data returned by the GROQ queries in queries.ts.
-// One interface per Sanity document type. Fields are optional (?) wherever the
-// CMS allows the editor to leave them empty.
+// Forme TypeScript dei dati restituiti dalle query GROQ in queries.ts.
+// Una interface per ogni tipo di documento Sanity. I campi sono facoltativi (?)
+// dove il CMS permette al redattore di lasciarli vuoti.
 
 export interface SanityTeamMember {
   _id: string;

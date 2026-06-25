@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand tokens */
+  /* Token del brand */
   --brand-navy: #1B3A5C;
   --brand-navy-dark: #0F2740;
   --brand-navy-light: #2D5A8E;
   --brand-teal: #2A7F6F;
   --brand-teal-light: #5BB5A3;
 
-  /* Semantic tokens */
+  /* Token semantici */
   --background-default: #ffffff;
   --foreground-default: #111827;
   --foreground-muted: #6B7280;
@@ -16,7 +16,7 @@
   --surface-card: #ffffff;
   --surface-muted: #F9FAFB;
 
-  /* Action tokens */
+  /* Token delle azioni */
   --action-primary: #1B3A5C;
   --action-primary-foreground: #ffffff;
   --action-secondary: #EEF2F7;
@@ -39,7 +39,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Display typography scale */
+/* Scala tipografica display */
 .display-xl {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   line-height: 1.1;
@@ -76,7 +76,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Buttons */
+/* Pulsanti */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -174,7 +174,7 @@ body {
   font-size: 0.875rem;
 }
 
-/* Cards */
+/* Card */
 .card {
   background-color: var(--surface-card);
   border-radius: 0.75rem;
@@ -188,7 +188,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Layout helpers */
+/* Helper di layout */
 .container {
   max-width: 1280px;
   margin-inline: auto;
@@ -231,13 +231,13 @@ body {
   color: var(--foreground-muted);
 }
 
-/* Divider */
+/* Divisore */
 .divider {
   height: 1px;
   background-color: var(--border-default);
 }
 
-/* Form elements */
+/* Elementi del form */
 .form-label {
   display: block;
   font-size: 0.875rem;
@@ -330,7 +330,7 @@ body {
   transform: scaleX(1);
 }
 
-/* Table */
+/* Tabella */
 .deadline-table {
   width: 100%;
   border-collapse: separate;
@@ -391,7 +391,7 @@ body {
   color: var(--foreground-muted);
 }
 
-/* Prose for articles */
+/* Testo degli articoli */
 .prose {
   max-width: 70ch;
   line-height: 1.75;
@@ -428,7 +428,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--surface-muted); }
 ::-webkit-scrollbar-thumb { background: var(--brand-navy-light); border-radius: 3px; }
 
-/* Article image hover (CSS-only) */
+/* Hover immagine articolo (solo CSS) */
 .article-img-wrap {
   height: 13rem;
   overflow: hidden;
@@ -443,7 +443,7 @@ body {
   transform: scale(1.03);
 }
 
-/* Footer link hover (CSS-only) */
+/* Hover link del footer (solo CSS) */
 .footer-link {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.7);
@@ -454,7 +454,7 @@ body {
   color: white;
 }
 
-/* Responsive utility */
+/* Utilità responsive */
 @media (max-width: 768px) {
   .section { padding-block: 3rem; }
   .container { padding-inline: 1rem; }

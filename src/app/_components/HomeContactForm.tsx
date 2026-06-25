@@ -1,7 +1,7 @@
-// Client component. The homepage (page.tsx) is a server component, but a form needs
-// browser state (field values, loading, success), so the form lives here and is
-// imported into the page. This is the recurring pattern across the app: server
-// component fetches data, client component handles interactivity.
+// Client component. La homepage (page.tsx) è un server component, ma un modulo ha bisogno
+// di stato nel browser (valori dei campi, caricamento, successo), quindi il modulo vive qui
+// ed è importato nella pagina. È lo schema ricorrente nell'app: il server component recupera
+// i dati, il client component gestisce l'interattività.
 "use client";
 
 import React from "react";

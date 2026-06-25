@@ -1,12 +1,12 @@
-// Webhook endpoint called by Sanity whenever content is published. It regenerates
-// EVERY page of the site on demand (instead of waiting for the 60s ISR window).
+// Endpoint webhook chiamato da Sanity ogni volta che un contenuto viene pubblicato.
+// Rigenera OGNI pagina del sito su richiesta (invece di aspettare la finestra ISR di 60s).
 //
-// revalidatePath("/", "layout") invalidates all routes that share the root layout,
-// i.e. the whole site — so a change to any document refreshes every page.
+// revalidatePath("/", "layout") invalida tutte le rotte che condividono il layout radice,
+// cioè l'intero sito — così una modifica a qualsiasi documento aggiorna ogni pagina.
 //
-// Protected by a shared secret (SANITY_REVALIDATE_SECRET) so only Sanity can trigger
-// it. The secret is passed either as ?secret=... in the URL or in the
-// x-revalidate-secret header.
+// Protetto da un segreto condiviso (SANITY_REVALIDATE_SECRET) così solo Sanity può
+// attivarlo. Il segreto si passa come ?secret=... nell'URL oppure nell'header
+// x-revalidate-secret.
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 

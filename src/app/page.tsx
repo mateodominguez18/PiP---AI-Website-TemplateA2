@@ -11,8 +11,8 @@ import { buildTitle, cityFromAddress } from "@/lib/seo";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-// Page-specific SEO. Studio name and city come from Sanity (siteSettings), so the
-// hand-written copy below updates automatically when the studio is renamed/relocated.
+// SEO specifica della pagina. Nome studio e città vengono da Sanity (siteSettings), così il
+// testo scritto a mano qui sotto si aggiorna in automatico quando lo studio viene rinominato/spostato.
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const studio = settings?.studioName || "Brambilla & Associati";
@@ -63,7 +63,7 @@ export default async function HomePage() {
     "url": SITE_URL,
     "telephone": phone,
     "email": email,
-    // address is taken from Sanity so it stays in sync when the studio edits it; schema.org allows a plain string here.
+    // l'indirizzo viene da Sanity così resta sincronizzato quando lo studio lo modifica; schema.org accetta una semplice stringa qui.
     "address": settings?.address || "Via Montenapoleone 8, 20121 Milano (MI)",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -79,7 +79,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(accountingServiceSchema) }}
       />
 
-      {/* Hero */}
+      {/* Sezione hero */}
       <section style={{ background: `linear-gradient(135deg, var(--brand-navy-dark) 0%, var(--brand-navy) 60%, var(--brand-navy-light) 100%)`, paddingTop: "5rem", paddingBottom: "5rem", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 70% 50%, rgba(42,127,111,0.15) 0%, transparent 60%)", pointerEvents: "none" }} />
         <div className="container" style={{ position: "relative" }}>

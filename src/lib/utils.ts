@@ -1,5 +1,5 @@
-// Date helpers. Sanity stores dates as ISO strings ("2025-06-16"); these turn
-// them into the Italian display formats used across the site.
+// Funzioni di utilità per le date. Sanity salva le date come stringhe ISO
+// ("2025-06-16"); queste le trasformano nei formati italiani usati nel sito.
 const MONTHS_ABB = ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
 const MONTHS_FULL = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
 
@@ -15,7 +15,7 @@ export function formatDateFull(isoDate: string): string {
   return `${parseInt(day)} ${MONTHS_FULL[parseInt(month) - 1]} ${year}`;
 }
 
-// Fallback logo mark: builds initials from the studio name when no logo image is set.
+// Sigla di riserva per il logo: ricava le iniziali dal nome dello studio quando non c'è un'immagine.
 // "Brambilla & Associati" -> "B&A", "Rossi & Partners" -> "R&P".
 export function initialsFromName(name: string): string {
   const words = (name ?? "").trim().split(/\s+/).filter(Boolean);

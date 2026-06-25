@@ -1,18 +1,18 @@
-// SEO helpers shared by the page-level generateMetadata() functions.
-// They let the fixed pages keep their hand-written, length-checked SEO copy while
-// pulling the studio name and city from Sanity, so renaming the studio (or moving
-// city) in the CMS updates every title/description automatically.
+// Funzioni di utilità per la SEO, condivise dalle generateMetadata() delle pagine.
+// Permettono alle pagine fisse di mantenere il testo SEO scritto a mano e controllato
+// in lunghezza, prendendo però nome studio e città da Sanity: così rinominando lo studio
+// (o cambiando città) nel CMS ogni title/description si aggiorna in automatico.
 
-// Pulls the city out of the free-text address ("Via X, 20121 Milano (MI)" -> "Milano").
-// Falls back to "Milano" if the address is empty or in an unexpected format.
+// Estrae la città dall'indirizzo libero ("Via X, 20121 Milano (MI)" -> "Milano").
+// Ripiega su "Milano" se l'indirizzo è vuoto o in un formato inatteso.
 export function cityFromAddress(address?: string, fallback = "Milano"): string {
   if (!address) return fallback;
   const match = address.match(/\d{5}\s+([^(,]+?)\s*(?:\(|$)/);
   return match ? match[1].trim() : fallback;
 }
 
-// Builds "<lead> a <city> – <studio>", but drops " a <city>" if the full title would
-// exceed Google's ~60-char limit. Pass no city for pages that don't need one.
+// Costruisce "<lead> a <città> – <studio>", ma toglie " a <città>" se il titolo completo
+// supererebbe il limite di ~60 caratteri di Google. Per le pagine senza città, non passarla.
 export function buildTitle(lead: string, studio: string, city?: string): string {
   if (city) {
     const withCity = `${lead} a ${city} – ${studio}`;

@@ -1,6 +1,6 @@
-// Sanity client used by every server-side query in the app (see queries.ts).
-// Credentials come from public env vars; there is no API token here because the
-// public site only ever reads already-published content.
+// Client di Sanity usato da ogni query lato server dell'app (vedi queries.ts).
+// Le credenziali vengono da variabili d'ambiente pubbliche; qui non c'è alcun token
+// API perché il sito pubblico legge solo contenuti già pubblicati.
 import { createClient } from "next-sanity";
 
 export const client = createClient({

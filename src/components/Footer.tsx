@@ -47,10 +47,10 @@ export function Footer({
             gap: "3rem",
           }}
         >
-          {/* Studio info */}
+          {/* Info studio */}
           <div style={{ gridColumn: "span 2" }} className="footer-wide-col">
             <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", marginBottom: "1rem" }}>
-              {/* Logo: uploaded image from Sanity, or initials derived from the studio name */}
+              {/* Logo: immagine caricata da Sanity, oppure le iniziali ricavate dal nome dello studio */}
               {logoUrl ? (
                 <img
                   src={logoUrl}
@@ -146,7 +146,7 @@ export function Footer({
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* Barra inferiore */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
         <div
           className="container"

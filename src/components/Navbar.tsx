@@ -48,7 +48,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
     >
       <div className="container">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem" }}>
-          {/* Logo: uploaded image from Sanity, or initials derived from the studio name */}
+          {/* Logo: immagine caricata da Sanity, oppure le iniziali ricavate dal nome dello studio */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.625rem" }}>
             {logoUrl ? (
               <img
@@ -84,7 +84,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
             </div>
           </Link>
 
-          {/* Desktop nav */}
+          {/* Navigazione desktop */}
           <nav style={{ display: "flex", alignItems: "center", gap: "1.75rem" }} className="hidden-mobile">
             {navItems.map((item) => (
               <Link
@@ -97,7 +97,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
             ))}
           </nav>
 
-          {/* Desktop CTA */}
+          {/* CTA desktop */}
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }} className="hidden-mobile">
             <a
               href={`tel:${phone}`}
@@ -118,7 +118,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Hamburger mobile */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             style={{
@@ -137,7 +137,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menu mobile */}
       {mobileOpen && (
         <div
           style={{

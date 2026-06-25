@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { SiteChrome } from "@/components/SiteChrome";
 import { client } from "@/lib/sanity";
 import { getSiteSettings } from "@/lib/queries";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-// Default/fallback SEO. metadataBase lets the per-page `alternates.canonical` paths
-// (e.g. "/team") resolve to absolute URLs. Each page overrides title/description.
+// SEO predefinita/di riserva. metadataBase permette ai percorsi `alternates.canonical`
+// di ogni pagina (es. "/team") di risolversi in URL assoluti. Ogni pagina sovrascrive title/description.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Brambilla & Associati — Dottori Commercialisti a Milano",
@@ -25,7 +26,7 @@ const DEFAULTS = {
   fontFamily: "Inter",
 };
 
-// Falls back to null on error so the site still renders with DEFAULTS if Sanity is unreachable.
+// Ripiega su null in caso di errore così il sito si mostra comunque con i DEFAULTS se Sanity è irraggiungibile.
 async function getTheme() {
   try {
     return await client.fetch(
@@ -73,23 +74,28 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={fontUrl} rel="stylesheet" />
-        {/* Inline style because the values come from Sanity at request time — they can't live in a static CSS file. */}
+        {/* Stile inline perché i valori vengono da Sanity al momento della richiesta — non possono stare in un file CSS statico. */}
         <style dangerouslySetInnerHTML={{ __html: cssOverride }} />
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://embeds.iubenda.com/widgets/e164dbb6-76ee-471a-af39-765056ca77c6.js" async />
       </head>
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Navbar studioName={settings?.studioName} phone={settings?.phone} logoUrl={settings?.logoUrl} />
-        <main style={{ flex: 1 }}>{children}</main>
-        <Footer
-          studioName={settings?.studioName}
-          piva={settings?.piva}
-          email={settings?.email}
-          phone={settings?.phone}
-          address={settings?.address}
-          hours={settings?.hours}
-          logoUrl={settings?.logoUrl}
-        />
+        <SiteChrome
+          navbar={<Navbar studioName={settings?.studioName} phone={settings?.phone} logoUrl={settings?.logoUrl} />}
+          footer={
+            <Footer
+              studioName={settings?.studioName}
+              piva={settings?.piva}
+              email={settings?.email}
+              phone={settings?.phone}
+              address={settings?.address}
+              hours={settings?.hours}
+              logoUrl={settings?.logoUrl}
+            />
+          }
+        >
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );

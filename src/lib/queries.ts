@@ -1,6 +1,6 @@
-// Central data layer: every GROQ query the site runs lives here. Pages call these
-// functions from server components and pass the result down as props — no component
-// fetches Sanity directly. The FIELDS constants are shared projections reused across queries.
+// Livello dati centrale: qui vivono tutte le query GROQ del sito. Le pagine chiamano
+// queste funzioni dai server component e passano il risultato come props — nessun
+// componente interroga Sanity direttamente. Le costanti FIELDS sono proiezioni condivise riusate tra le query.
 import { client } from "./sanity";
 import type {
   SanityTeamMember,
@@ -10,10 +10,10 @@ import type {
   SanitySettings,
 } from "./types";
 
-// Content is cached for 60s so Sanity edits appear quickly without hammering the API on every request.
+// Il contenuto è in cache per 60s, così le modifiche in Sanity appaiono in fretta senza interrogare l'API a ogni richiesta.
 const opts = { next: { revalidate: 60 } };
 
-// "imageUrl": image.asset->url resolves the Sanity asset reference inline so components receive a plain URL string.
+// "imageUrl": image.asset->url risolve il riferimento all'asset di Sanity così i componenti ricevono direttamente l'URL come stringa.
 const TEAM_FIELDS = `_id, name, title, role, bio, bioExtended, education, specializations, linkedIn, "imageUrl": image.asset->url, order`;
 const AREA_FIELDS = `_id, title, "slug": slug.current, icon, shortDescription, fullDescription, activities, benefits, targetClients, faq, order`;
 const DEADLINE_FIELDS = `_id, title, description, date, month, category, priority, audience`;
@@ -60,7 +60,7 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
   );
 }
 
-// no-store so generateStaticParams always sees newly published articles/areas — a cached list would miss them until revalidation.
+// no-store così generateStaticParams vede sempre gli articoli/aree appena pubblicati — una lista in cache li mancherebbe fino alla rivalidazione.
 export async function getArticleSlugs(): Promise<string[]> {
   const results: { slug: string }[] = await client.fetch(
     `*[_type == "article" && defined(slug.current)] { "slug": slug.current }`,
@@ -70,7 +70,7 @@ export async function getArticleSlugs(): Promise<string[]> {
   return results.map((r) => r.slug);
 }
 
-// Same no-store rationale as getArticleSlugs.
+// Stessa logica no-store di getArticleSlugs.
 export async function getConsultingAreaSlugs(): Promise<string[]> {
   const results: { slug: string }[] = await client.fetch(
     `*[_type == "consultingArea" && defined(slug.current)] { "slug": slug.current }`,

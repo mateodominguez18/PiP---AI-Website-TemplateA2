@@ -15,8 +15,8 @@ function slugify(name: string) {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
-// Per-article SEO from Sanity. Article titles are already long and keyword-rich, so
-// the brand suffix is omitted to avoid an over-length, truncated title tag.
+// SEO del singolo articolo, da Sanity. I titoli degli articoli sono già lunghi e ricchi di
+// parole chiave, quindi il suffisso del brand viene omesso per evitare un title troppo lungo e troncato.
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const [article, settings] = await Promise.all([getArticle(slug), getSiteSettings()]);

@@ -1,6 +1,6 @@
-// Client component for /scadenze. The page server-fetches the deadlines and passes
-// them in as props; this component owns the interactive filtering (search + month +
-// category + priority) and groups the results by month for display.
+// Client component per /scadenze. La pagina recupera le scadenze sul server e le passa
+// come props; questo componente gestisce il filtro interattivo (ricerca + mese +
+// categoria + priorità) e raggruppa i risultati per mese.
 "use client";
 
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function ScadenzeClient({ deadlines }: { deadlines: SanityTaxDeadline[] }
       d.title.toLowerCase().includes(search.toLowerCase()) ||
       (d.description ?? "").toLowerCase().includes(search.toLowerCase()) ||
       (d.audience ?? "").toLowerCase().includes(search.toLowerCase());
-    // Sanity stores month as "Giugno 2025"; filter options are just "Giugno" — startsWith matches without caring about the year.
+    // Sanity salva il mese come "Giugno 2025"; le opzioni del filtro sono solo "Giugno" — startsWith fa il match senza tenere conto dell'anno.
     const matchMonth = selectedMonth === "Tutti" || (d.month ?? "").startsWith(selectedMonth);
     const matchCategory = selectedCategory === "Tutte" || d.category === selectedCategory;
     const matchPriority = selectedPriority === "Tutte" || d.priority === selectedPriority;

@@ -1,4 +1,4 @@
-// Run with: node --env-file=.env.local scripts/seed-sanity.mjs
+// Eseguire con: node --env-file=.env.local scripts/seed-sanity.mjs
 import { createClient } from "@sanity/client";
 
 const client = createClient({
@@ -9,7 +9,7 @@ const client = createClient({
   useCdn: false,
 });
 
-// ─── helpers ────────────────────────────────────────────────────────────────
+// ─── funzioni di utilità ────────────────────────────────────────────────────
 
 const MONTH_ABB = { gen:1,feb:2,mar:3,apr:4,mag:5,giu:6,lug:7,ago:8,set:9,ott:10,nov:11,dic:12 };
 const MONTH_FULL = { gennaio:1,febbraio:2,marzo:3,aprile:4,maggio:5,giugno:6,luglio:7,agosto:8,settembre:9,ottobre:10,novembre:11,dicembre:12 };
@@ -42,8 +42,8 @@ async function deleteExisting(type) {
 
 async function seedSiteSettings() {
   console.log("\n📋 Seeding siteSettings...");
-  // createOrReplace with a fixed _id keeps siteSettings as a singleton — re-running the seed
-  // updates the existing document instead of creating duplicates.
+  // createOrReplace con un _id fisso mantiene siteSettings come singleton — rieseguendo il seed
+  // aggiorna il documento esistente invece di crearne duplicati.
   await client.createOrReplace({
     _id: "siteSettings",
     _type: "siteSettings",
