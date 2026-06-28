@@ -3,9 +3,7 @@ import { ArrowRight, CheckCircle2, Linkedin } from "lucide-react";
 import { getTeamMembers, getSiteSettings } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import type { SanityTeamMember } from "@/lib/types";
-import { buildTitle, cityFromAddress } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+import { buildTitle, cityFromAddress, resolveSiteUrl } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -26,6 +24,7 @@ function slugify(name: string) {
 
 export default async function TeamPage() {
   const [teamMembers, settings] = await Promise.all([getTeamMembers(), getSiteSettings()]);
+  const SITE_URL = resolveSiteUrl(settings?.siteUrl);
   const recruitingEmail = settings?.recruitingEmail || "recruiting@brambilla-associati.it";
 
   const breadcrumbSchema = {

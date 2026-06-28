@@ -67,4 +67,6 @@ export interface SanitySettings {
   piva?: string;
   recruitingEmail?: string;
   logoUrl?: string;
+  siteUrl?: string;
+  sitemapUrl?: string;
 }

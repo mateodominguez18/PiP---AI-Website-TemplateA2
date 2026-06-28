@@ -1,12 +1,10 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getConsultingAreas, getSiteSettings } from "@/lib/queries";
+import { getConsultingAreas, getSiteSettings, getSiteUrl } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { buildTitle, cityFromAddress } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -21,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ConsulenzaPage() {
   const consultingAreas = await getConsultingAreas();
+  const SITE_URL = await getSiteUrl();
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

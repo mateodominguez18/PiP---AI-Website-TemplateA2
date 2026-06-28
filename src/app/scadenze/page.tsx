@@ -1,10 +1,8 @@
 ﻿import type { Metadata } from "next";
-import { getTaxDeadlines, getSiteSettings } from "@/lib/queries";
+import { getTaxDeadlines, getSiteSettings, getSiteUrl } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ScadenzeClient } from "../_components/ScadenzeClient";
 import { buildTitle } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -19,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ScadenzePage() {
   const deadlines = await getTaxDeadlines();
+  const SITE_URL = await getSiteUrl();
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

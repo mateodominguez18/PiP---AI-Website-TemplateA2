@@ -1,10 +1,8 @@
 ﻿import type { Metadata } from "next";
-import { getArticles, getSiteSettings } from "@/lib/queries";
+import { getArticles, getSiteSettings, getSiteUrl } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { GuideClient } from "../_components/GuideClient";
 import { buildTitle, cityFromAddress } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -19,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function GuidePage() {
   const articles = await getArticles();
+  const SITE_URL = await getSiteUrl();
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

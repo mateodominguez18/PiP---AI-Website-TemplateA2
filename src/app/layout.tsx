@@ -4,18 +4,20 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SiteChrome } from "@/components/SiteChrome";
 import { client } from "@/lib/sanity";
-import { getSiteSettings } from "@/lib/queries";
+import { getSiteSettings, getSiteUrl } from "@/lib/queries";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-// SEO predefinita/di riserva. metadataBase permette ai percorsi `alternates.canonical`
-// di ogni pagina (es. "/team") di risolversi in URL assoluti. Ogni pagina sovrascrive title/description.
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: "Brambilla & Associati — Dottori Commercialisti a Milano",
-  description:
-    "Studio professionale con sede a Milano. Consulenza fiscale, societaria e del lavoro per imprenditori, professionisti e imprese.",
-};
+// SEO predefinita/di riserva. metadataBase (il dominio) viene da Sanity, così i percorsi
+// `alternates.canonical` di ogni pagina (es. "/team") si risolvono in URL assoluti sul
+// dominio giusto, modificabile senza redeploy. Ogni pagina sovrascrive title/description.
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getSiteUrl();
+  return {
+    metadataBase: new URL(baseUrl),
+    title: "Brambilla & Associati — Dottori Commercialisti a Milano",
+    description:
+      "Studio professionale con sede a Milano. Consulenza fiscale, societaria e del lavoro per imprenditori, professionisti e imprese.",
+  };
+}
 
 const DEFAULTS = {
   primaryColor: "#1B3A5C",

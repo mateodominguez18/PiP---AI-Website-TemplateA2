@@ -7,9 +7,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
 import { HomeContactForm } from "./_components/HomeContactForm";
 import { formatDate } from "@/lib/utils";
-import { buildTitle, cityFromAddress } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+import { buildTitle, cityFromAddress, resolveSiteUrl } from "@/lib/seo";
 
 // SEO specifica della pagina. Nome studio e città vengono da Sanity (siteSettings), così il
 // testo scritto a mano qui sotto si aggiorna in automatico quando lo studio viene rinominato/spostato.
@@ -47,6 +45,8 @@ export default async function HomePage() {
     getTeamMembers(),
     getSiteSettings(),
   ]);
+
+  const SITE_URL = resolveSiteUrl(settings?.siteUrl);
 
   const upcomingDeadlines = deadlines.slice(0, 5);
   const featuredArticles = articles.slice(0, 3);

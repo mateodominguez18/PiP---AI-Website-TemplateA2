@@ -2,6 +2,7 @@
 // queste funzioni dai server component e passano il risultato come props — nessun
 // componente interroga Sanity direttamente. Le costanti FIELDS sono proiezioni condivise riusate tra le query.
 import { client } from "./sanity";
+import { resolveSiteUrl } from "./seo";
 import type {
   SanityTeamMember,
   SanityConsultingArea,
@@ -54,10 +55,24 @@ export async function getArticle(slug: string): Promise<SanityArticle | null> {
 
 export async function getSiteSettings(): Promise<SanitySettings | null> {
   return client.fetch(
-    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, "logoUrl": logo.asset->url }`,
+    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, sitemapUrl, "logoUrl": logo.asset->url }`,
     {},
     opts
   );
+}
+
+// URL di base del sito, preso da Sanity (modificabile senza redeploy) con fallback su env/Vercel.
+// Usato da robots, dagli URL canonici e dal JSON-LD così l'intero sito usa lo stesso dominio.
+export async function getSiteUrl(): Promise<string> {
+  const settings = await getSiteSettings();
+  return resolveSiteUrl(settings?.siteUrl);
+}
+
+// URL della sitemap (generata esternamente). Usa il valore di Sanity se presente,
+// altrimenti <URL del sito>/sitemap.xml.
+export async function getSitemapUrl(): Promise<string> {
+  const settings = await getSiteSettings();
+  return settings?.sitemapUrl?.trim() || `${resolveSiteUrl(settings?.siteUrl)}/sitemap.xml`;
 }
 
 // no-store così generateStaticParams vede sempre gli articoli/aree appena pubblicati — una lista in cache li mancherebbe fino alla rivalidazione.

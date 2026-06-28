@@ -20,3 +20,12 @@ export function buildTitle(lead: string, studio: string, city?: string): string 
   }
   return `${lead} – ${studio}`;
 }
+
+// Risolve l'URL di base del sito (usato per robots, canonical e JSON-LD).
+// Priorità: il valore impostato in Sanity (modificabile senza redeploy), poi la
+// variabile d'ambiente, poi l'URL automatico di Vercel, infine localhost.
+export function resolveSiteUrl(siteUrl?: string): string {
+  const fromVercel = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
+  const url = siteUrl || process.env.NEXT_PUBLIC_SITE_URL || fromVercel || "http://localhost:3000";
+  return url.trim().replace(/\/+$/, ""); // niente "/" finale
+}

@@ -3,13 +3,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, ArrowRight, BookOpen, FileText, Building2, Users, TrendingUp, Globe } from "lucide-react";
-import { getConsultingArea, getConsultingAreas, getConsultingAreaSlugs, getSiteSettings } from "@/lib/queries";
+import { getConsultingArea, getConsultingAreas, getConsultingAreaSlugs, getSiteSettings, getSiteUrl } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { buildTitle, cityFromAddress } from "@/lib/seo";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; style?: React.CSSProperties }>> = {
   BookOpen, FileText, Building2, Users, TrendingUp, Globe,
@@ -45,6 +43,7 @@ export default async function ConsulenzaDetailPage({ params }: { params: Promise
 
   const otherAreas = allAreas.filter((a) => a.slug !== slug).slice(0, 3);
   const Icon = iconMap[area.icon ?? ""] ?? FileText;
+  const SITE_URL = await getSiteUrl();
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

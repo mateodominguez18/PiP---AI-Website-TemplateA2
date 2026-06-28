@@ -3,12 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, User, Tag, ArrowRight } from "lucide-react";
 import { PortableText } from "@portabletext/react";
-import { getArticle, getArticles, getArticleSlugs, getSiteSettings } from "@/lib/queries";
+import { getArticle, getArticles, getArticleSlugs, getSiteSettings, getSiteUrl } from "@/lib/queries";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArticleCard } from "@/components/ArticleCard";
 import { formatDateFull } from "@/lib/utils";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=450&fit=crop";
 
 function slugify(name: string) {
@@ -80,6 +79,7 @@ export default async function ArticoloPage({ params }: { params: Promise<{ slug:
 
   if (!article) notFound();
 
+  const SITE_URL = await getSiteUrl();
   const related = allArticles.filter((a) => a.slug !== slug).slice(0, 3);
   const imgSrc = article.imageUrl || PLACEHOLDER_IMG;
   const dateDisplay = formatDateFull(article.date);
