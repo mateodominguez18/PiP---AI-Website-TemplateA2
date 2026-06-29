@@ -1,7 +1,29 @@
+import type { Metadata } from "next";
+
 // Funzioni di utilità per la SEO, condivise dalle generateMetadata() delle pagine.
 // Permettono alle pagine fisse di mantenere il testo SEO scritto a mano e controllato
 // in lunghezza, prendendo però nome studio e città da Sanity: così rinominando lo studio
 // (o cambiando città) nel CMS ogni title/description si aggiorna in automatico.
+
+// Combina i campi SEO impostati in Sanity con i default scritti nel codice. Se il redattore
+// compila meta title/description nello Studio, quelli vincono; altrimenti si usa il default.
+// Aggiunge anche Open Graph (anteprima sui social) e l'URL canonico.
+type SeoOverride = { metaTitle?: string; metaDescription?: string } | null | undefined;
+
+export function buildMetadata(
+  override: SeoOverride,
+  fallback: { title: string; description?: string; canonical?: string }
+): Metadata {
+  const title = override?.metaTitle?.trim() || fallback.title;
+  const description = override?.metaDescription?.trim() || fallback.description || undefined;
+  const meta: Metadata = {
+    title,
+    description,
+    openGraph: { title, description, type: "website" },
+  };
+  if (fallback.canonical) meta.alternates = { canonical: fallback.canonical };
+  return meta;
+}
 
 // Estrae la città dall'indirizzo libero ("Via X, 20121 Milano (MI)" -> "Milano").
 // Ripiega su "Milano" se l'indirizzo è vuoto o in un formato inatteso.

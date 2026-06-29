@@ -85,6 +85,11 @@ export const consultingArea = defineType({
       title: "Ordine",
       type: "number",
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
   orderings: [
     {

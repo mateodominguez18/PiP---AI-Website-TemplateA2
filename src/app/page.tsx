@@ -1,25 +1,25 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
-import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings } from "@/lib/queries";
+import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings, getPageSeo } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
 import { HomeContactForm } from "./_components/HomeContactForm";
 import { formatDate } from "@/lib/utils";
-import { buildTitle, cityFromAddress, resolveSiteUrl } from "@/lib/seo";
+import { buildTitle, cityFromAddress, resolveSiteUrl, buildMetadata } from "@/lib/seo";
 
 // SEO specifica della pagina. Nome studio e città vengono da Sanity (siteSettings), così il
 // testo scritto a mano qui sotto si aggiorna in automatico quando lo studio viene rinominato/spostato.
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const [settings, pageSeo] = await Promise.all([getSiteSettings(), getPageSeo()]);
   const studio = settings?.studioName || "Brambilla & Associati";
   const city = cityFromAddress(settings?.address);
-  return {
+  return buildMetadata(pageSeo?.home, {
     title: buildTitle("Studio Commercialista", studio, city),
     description: `Studio di dottori commercialisti a ${city}: consulenza fiscale, societaria e del lavoro per imprese, professionisti e privati. Richiedi una prima consulenza.`,
-    alternates: { canonical: "/" },
-  };
+    canonical: "/",
+  });
 }
 
 const differentiators = [

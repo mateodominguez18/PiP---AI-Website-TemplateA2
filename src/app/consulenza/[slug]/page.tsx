@@ -7,7 +7,7 @@ import { getConsultingArea, getConsultingAreas, getConsultingAreaSlugs, getSiteS
 import { PageHero } from "@/components/PageHero";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ConsultingCard } from "@/components/ConsultingCard";
-import { buildTitle, cityFromAddress } from "@/lib/seo";
+import { buildTitle, cityFromAddress, buildMetadata } from "@/lib/seo";
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; style?: React.CSSProperties }>> = {
   BookOpen, FileText, Building2, Users, TrendingUp, Globe,
@@ -27,12 +27,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!area) return { title: `Area non trovata – ${studio}` };
 
   const city = cityFromAddress(settings?.address);
-  return {
+  return buildMetadata(area.seo, {
     title: buildTitle(area.title, studio, city),
     description: (area.shortDescription ?? "").slice(0, 158) ||
       `Consulenza in ${area.title.toLowerCase()} a ${city} dello studio ${studio}.`,
-    alternates: { canonical: `/consulenza/${slug}` },
-  };
+    canonical: `/consulenza/${slug}`,
+  });
 }
 
 export default async function ConsulenzaDetailPage({ params }: { params: Promise<{ slug: string }> }) {

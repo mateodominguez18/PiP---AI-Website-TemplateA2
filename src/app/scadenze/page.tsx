@@ -1,18 +1,18 @@
 ﻿import type { Metadata } from "next";
-import { getTaxDeadlines, getSiteSettings, getSiteUrl } from "@/lib/queries";
+import { getTaxDeadlines, getSiteSettings, getSiteUrl, getPageSeo } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ScadenzeClient } from "../_components/ScadenzeClient";
-import { buildTitle } from "@/lib/seo";
+import { buildTitle, buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const [settings, pageSeo] = await Promise.all([getSiteSettings(), getPageSeo()]);
   const studio = settings?.studioName || "Brambilla & Associati";
-  return {
+  return buildMetadata(pageSeo?.scadenze, {
     title: buildTitle("Scadenze Fiscali 2025: Calendario", studio),
     description:
       "Calendario completo delle scadenze fiscali 2025: adempimenti, versamenti e dichiarazioni per imprese, professionisti e privati, aggiornato dallo studio.",
-    alternates: { canonical: "/scadenze" },
-  };
+    canonical: "/scadenze",
+  });
 }
 
 export default async function ScadenzePage() {

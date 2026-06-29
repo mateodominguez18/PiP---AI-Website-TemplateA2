@@ -116,6 +116,11 @@ export const article = defineType({
         },
       ],
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
   orderings: [
     {

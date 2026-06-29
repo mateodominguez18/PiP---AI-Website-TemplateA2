@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { getSiteSettings } from "@/lib/queries";
+import { getSiteSettings, getPageSeo } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { ContattiClient } from "../_components/ContattiClient";
-import { buildTitle, cityFromAddress } from "@/lib/seo";
+import { buildTitle, cityFromAddress, buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const [settings, pageSeo] = await Promise.all([getSiteSettings(), getPageSeo()]);
   const studio = settings?.studioName || "Brambilla & Associati";
   const city = cityFromAddress(settings?.address);
-  return {
+  return buildMetadata(pageSeo?.contatti, {
     title: buildTitle("Contatti Commercialista", studio, city),
     description: `Contatta lo studio ${studio} a ${city} per una consulenza fiscale, societaria o del lavoro: telefono, email e modulo per richiedere assistenza.`,
-    alternates: { canonical: "/contatti" },
-  };
+    canonical: "/contatti",
+  });
 }
 
 export default async function ContattiPage() {

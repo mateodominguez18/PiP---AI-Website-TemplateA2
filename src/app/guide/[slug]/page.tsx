@@ -7,6 +7,7 @@ import { getArticle, getArticles, getArticleSlugs, getSiteSettings, getSiteUrl }
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArticleCard } from "@/components/ArticleCard";
 import { formatDateFull } from "@/lib/utils";
+import { buildMetadata } from "@/lib/seo";
 
 const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=450&fit=crop";
 
@@ -21,11 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const [article, settings] = await Promise.all([getArticle(slug), getSiteSettings()]);
   if (!article) return { title: `Articolo non trovato – ${settings?.studioName || "Brambilla & Associati"}` };
 
-  return {
+  return buildMetadata(article.seo, {
     title: article.title,
     description: (article.excerpt ?? "").slice(0, 158) || undefined,
-    alternates: { canonical: `/guide/${slug}` },
-  };
+    canonical: `/guide/${slug}`,
+  });
 }
 
 const ptComponents = {

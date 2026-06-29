@@ -2,6 +2,22 @@
 // Una interface per ogni tipo di documento Sanity. I campi sono facoltativi (?)
 // dove il CMS permette al redattore di lasciarli vuoti.
 
+// Campi SEO opzionali (oggetto "seo"), compilabili dal redattore nello Studio.
+export interface SeoFields {
+  metaTitle?: string;
+  metaDescription?: string;
+}
+
+// Singleton "SEO Pagine": un blocco SEO opzionale per ogni pagina fissa.
+export interface SanityPageSeo {
+  home?: SeoFields;
+  consulenza?: SeoFields;
+  guide?: SeoFields;
+  scadenze?: SeoFields;
+  team?: SeoFields;
+  contatti?: SeoFields;
+}
+
 export interface SanityTeamMember {
   _id: string;
   name: string;
@@ -28,6 +44,7 @@ export interface SanityConsultingArea {
   targetClients?: string;
   faq?: { question: string; answer: string }[];
   order?: number;
+  seo?: SeoFields;
 }
 
 export interface SanityTaxDeadline {
@@ -55,6 +72,7 @@ export interface SanityArticle {
   tags?: string[];
   body?: unknown[];
   faq?: { question: string; answer: string }[];
+  seo?: SeoFields;
 }
 
 export interface SanitySettings {

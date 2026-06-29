@@ -1,18 +1,18 @@
 ﻿import type { Metadata } from "next";
-import { getArticles, getSiteSettings, getSiteUrl } from "@/lib/queries";
+import { getArticles, getSiteSettings, getSiteUrl, getPageSeo } from "@/lib/queries";
 import { PageHero } from "@/components/PageHero";
 import { GuideClient } from "../_components/GuideClient";
-import { buildTitle, cityFromAddress } from "@/lib/seo";
+import { buildTitle, cityFromAddress, buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const [settings, pageSeo] = await Promise.all([getSiteSettings(), getPageSeo()]);
   const studio = settings?.studioName || "Brambilla & Associati";
   const city = cityFromAddress(settings?.address);
-  return {
+  return buildMetadata(pageSeo?.guide, {
     title: buildTitle("Guide e Novità Fiscali", studio),
     description: `Guide pratiche e novità su fiscalità, diritto societario e lavoro a cura dei professionisti dello studio ${studio} di ${city}. Aggiornamenti utili.`,
-    alternates: { canonical: "/guide" },
-  };
+    canonical: "/guide",
+  });
 }
 
 export default async function GuidePage() {
