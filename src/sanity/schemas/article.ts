@@ -104,15 +104,17 @@ export const article = defineType({
     defineField({
       name: "faq",
       title: "FAQ",
+      description: "Generate con PROMPT-15-FAQ-GENERATOR (GEO): domanda, risposta e keyword target.",
       type: "array",
       of: [
         {
           type: "object",
           fields: [
-            { name: "question", title: "Domanda", type: "string" },
-            { name: "answer", title: "Risposta", type: "text" },
+            { name: "domanda", title: "Domanda", type: "string" },
+            { name: "risposta", title: "Risposta", type: "text" },
+            { name: "keyword_target", title: "Keyword target (GEO)", type: "string" },
           ],
-          preview: { select: { title: "question" } },
+          preview: { select: { title: "domanda" } },
         },
       ],
     }),

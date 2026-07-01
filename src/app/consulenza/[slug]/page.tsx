@@ -55,9 +55,21 @@ export default async function ConsulenzaDetailPage({ params }: { params: Promise
     ],
   };
 
+  const faqItems = area.faq ?? [];
+  const faqSchema = faqItems.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map((f) => ({
+      "@type": "Question",
+      "name": f.domanda,
+      "acceptedAnswer": { "@type": "Answer", "text": f.risposta },
+    })),
+  } : null;
+
   return (
     <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       <PageHero
         title={area.title}
@@ -107,10 +119,10 @@ export default async function ConsulenzaDetailPage({ params }: { params: Promise
                 </div>
               </div>
 
-              {(area.faq ?? []).length > 0 && (
+              {faqItems.length > 0 && (
                 <div>
                   <h3 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1.25rem" }}>Domande frequenti</h3>
-                  <FAQAccordion items={area.faq!} />
+                  <FAQAccordion items={faqItems} />
                 </div>
               )}
             </div>

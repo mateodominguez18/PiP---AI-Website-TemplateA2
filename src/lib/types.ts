@@ -42,7 +42,7 @@ export interface SanityConsultingArea {
   activities?: string[];
   benefits?: string[];
   targetClients?: string;
-  faq?: { question: string; answer: string }[];
+  faq?: { domanda: string; risposta: string; keyword_target?: string }[];
   order?: number;
   seo?: SeoFields;
 }
@@ -71,7 +71,7 @@ export interface SanityArticle {
   imageUrl?: string;
   tags?: string[];
   body?: unknown[];
-  faq?: { question: string; answer: string }[];
+  faq?: { domanda: string; risposta: string; keyword_target?: string }[];
   seo?: SeoFields;
 }
 

@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 
 interface FAQItem {
-  question: string;
-  answer: string;
+  domanda: string;
+  risposta: string;
+  keyword_target?: string;
 }
 
 interface FAQAccordionProps {
@@ -24,14 +25,14 @@ export function FAQAccordion({ items }: FAQAccordionProps) {
             onClick={() => setOpen(open === i ? null : i)}
             aria-expanded={open === i}
           >
-            <span>{item.question}</span>
+            <span>{item.domanda}</span>
             <span style={{ flexShrink: 0, color: "var(--brand-navy)" }}>
               {open === i ? <Minus size={18} /> : <Plus size={18} />}
             </span>
           </button>
           {open === i && (
             <div className="accordion-content">
-              {item.answer}
+              {item.risposta}
             </div>
           )}
         </div>

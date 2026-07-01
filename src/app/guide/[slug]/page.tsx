@@ -65,8 +65,8 @@ const ptComponents = {
 };
 
 const defaultFAQ = [
-  { question: "Come posso ricevere aggiornamenti sulle novità fiscali?", answer: "Iscriviti alla nostra newsletter o contattaci per essere aggiunto alla lista dei clienti che ricevono le nostre circolari periodiche." },
-  { question: "Il contenuto dell'articolo si applica alla mia situazione specifica?", answer: "Gli articoli pubblicati hanno carattere generale e informativo. Per valutare l'applicabilità alla tua situazione, ti consigliamo di contattare direttamente uno dei nostri professionisti." },
+  { domanda: "Come posso ricevere aggiornamenti sulle novità fiscali?", risposta: "Iscriviti alla nostra newsletter o contattaci per essere aggiunto alla lista dei clienti che ricevono le nostre circolari periodiche." },
+  { domanda: "Il contenuto dell'articolo si applica alla mia situazione specifica?", risposta: "Gli articoli pubblicati hanno carattere generale e informativo. Per valutare l'applicabilità alla tua situazione, ti consigliamo di contattare direttamente uno dei nostri professionisti." },
 ];
 
 export async function generateStaticParams() {
@@ -113,8 +113,8 @@ export default async function ArticoloPage({ params }: { params: Promise<{ slug:
     "@type": "FAQPage",
     "mainEntity": faqItems.map((f) => ({
       "@type": "Question",
-      "name": f.question,
-      "acceptedAnswer": { "@type": "Answer", "text": f.answer },
+      "name": f.domanda,
+      "acceptedAnswer": { "@type": "Answer", "text": f.risposta },
     })),
   } : null;
 
