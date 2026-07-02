@@ -20,7 +20,7 @@ const TEAM_FIELDS = `_id, name, title, role, bio, bioExtended, education, specia
 const AREA_FIELDS = `_id, title, "slug": slug.current, icon, shortDescription, fullDescription, activities, benefits, targetClients, faq, order, seo`;
 const DEADLINE_FIELDS = `_id, title, description, date, month, category, priority, audience`;
 const ARTICLE_FIELDS = `_id, title, "slug": slug.current, category, date, readTime, author, authorRole, excerpt, "imageUrl": image.asset->url, tags`;
-const ARTICLE_FULL_FIELDS = `${ARTICLE_FIELDS}, body, faq, seo`;
+const ARTICLE_FULL_FIELDS = `${ARTICLE_FIELDS}, keyword_principale, body, faq, seo`;
 
 export async function getTeamMembers(): Promise<SanityTeamMember[]> {
   return client.fetch(`*[_type == "teamMember"] | order(order asc) { ${TEAM_FIELDS} }`, {}, opts);

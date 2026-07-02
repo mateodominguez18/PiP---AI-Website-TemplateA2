@@ -77,6 +77,12 @@ export const article = defineType({
       of: [{ type: "string" }],
     }),
     defineField({
+      name: "keyword_principale",
+      title: "Keyword principale (GEO)",
+      type: "string",
+      description: "Keyword target dell'articolo, da PROMPT-19-BLOG-POST-OUTLINE / PROMPT-20-BLOG-POST-DRAFT.",
+    }),
+    defineField({
       name: "body",
       title: "Corpo articolo",
       type: "array",

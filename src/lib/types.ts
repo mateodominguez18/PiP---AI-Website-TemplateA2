@@ -70,6 +70,7 @@ export interface SanityArticle {
   excerpt?: string;
   imageUrl?: string;
   tags?: string[];
+  keyword_principale?: string;
   body?: unknown[];
   faq?: { domanda: string; risposta: string; keyword_target?: string }[];
   seo?: SeoFields;
