@@ -61,13 +61,6 @@ export const siteSettings = defineType({
       description:
         "Dominio del sito (es. https://www.studio.it), usato per robots.txt, gli URL canonici e i dati strutturati. Se vuoto, viene usato il dominio di Vercel.",
     }),
-    defineField({
-      name: "sitemapUrl",
-      title: "URL della sitemap",
-      type: "url",
-      description:
-        "Indirizzo completo della sitemap (es. https://www.studio.it/sitemap.xml). Se vuoto, viene usato <URL del sito>/sitemap.xml.",
-    }),
   ],
   preview: {
     select: { title: "studioName" },

@@ -87,5 +87,4 @@ export interface SanitySettings {
   recruitingEmail?: string;
   logoUrl?: string;
   siteUrl?: string;
-  sitemapUrl?: string;
 }

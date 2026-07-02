@@ -56,7 +56,7 @@ export async function getArticle(slug: string): Promise<SanityArticle | null> {
 
 export async function getSiteSettings(): Promise<SanitySettings | null> {
   return client.fetch(
-    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, sitemapUrl, "logoUrl": logo.asset->url }`,
+    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, "logoUrl": logo.asset->url }`,
     {},
     opts
   );
@@ -73,13 +73,6 @@ export async function getPageSeo(): Promise<SanityPageSeo | null> {
 export async function getSiteUrl(): Promise<string> {
   const settings = await getSiteSettings();
   return resolveSiteUrl(settings?.siteUrl);
-}
-
-// URL della sitemap (generata esternamente). Usa il valore di Sanity se presente,
-// altrimenti <URL del sito>/sitemap.xml.
-export async function getSitemapUrl(): Promise<string> {
-  const settings = await getSiteSettings();
-  return settings?.sitemapUrl?.trim() || `${resolveSiteUrl(settings?.siteUrl)}/sitemap.xml`;
 }
 
 // no-store così generateStaticParams vede sempre gli articoli/aree appena pubblicati — una lista in cache li mancherebbe fino alla rivalidazione.
