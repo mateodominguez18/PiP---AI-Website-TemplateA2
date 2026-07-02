@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
-import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings, getPageSeo } from "@/lib/queries";
+import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings, getPageSeo, getHomeContent } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
@@ -22,28 +22,36 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const differentiators = [
-  { icon: BookOpen, title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },
-  { icon: Users, title: "Interlocutore dedicato", description: "Ogni cliente ha un professionista di riferimento specifico. Nessun call center, nessun rimbalzo tra uffici: risposta diretta alle richieste, sempre dallo stesso interlocutore qualificato." },
-  { icon: Shield, title: "Esperienza multidisciplinare", description: "Il nostro team integra competenze fiscali, societarie e del lavoro. Affrontiamo i problemi nella loro complessità reale, senza frammentare l'analisi in silos separati." },
-  { icon: Award, title: "Approccio personalizzato", description: "Non esistono soluzioni standard. Ogni consulenza parte da un'analisi puntuale della situazione del cliente, degli obiettivi e del contesto, per arrivare alla risposta concretamente più utile." },
-  { icon: Clock, title: "Tempestività e rispetto delle scadenze", description: "Gestiamo tutte le scadenze fiscali e civilistiche con un sistema di monitoraggio interno. Il cliente non deve preoccuparsi di ricordare termini: ci pensiamo noi." },
+// Mappa il nome icona salvato in Sanity al componente Lucide corrispondente.
+const differentiatorIconMap: Record<string, typeof BookOpen> = { BookOpen, Users, Shield, Award, Clock };
+
+// Contenuti di default se in Sanity (singleton "homeContent") non è stato compilato nulla.
+const defaultDifferentiators = [
+  { icon: "BookOpen", title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },
+  { icon: "Users", title: "Interlocutore dedicato", description: "Ogni cliente ha un professionista di riferimento specifico. Nessun call center, nessun rimbalzo tra uffici: risposta diretta alle richieste, sempre dallo stesso interlocutore qualificato." },
+  { icon: "Shield", title: "Esperienza multidisciplinare", description: "Il nostro team integra competenze fiscali, societarie e del lavoro. Affrontiamo i problemi nella loro complessità reale, senza frammentare l'analisi in silos separati." },
+  { icon: "Award", title: "Approccio personalizzato", description: "Non esistono soluzioni standard. Ogni consulenza parte da un'analisi puntuale della situazione del cliente, degli obiettivi e del contesto, per arrivare alla risposta concretamente più utile." },
+  { icon: "Clock", title: "Tempestività e rispetto delle scadenze", description: "Gestiamo tutte le scadenze fiscali e civilistiche con un sistema di monitoraggio interno. Il cliente non deve preoccuparsi di ricordare termini: ci pensiamo noi." },
 ];
 
-const trustMetrics = [
+const defaultTrustMetrics = [
   { value: "22+", label: "Anni di attività" },
   { value: "300+", label: "Clienti assistiti" },
   { value: "4", label: "Professionisti dedicati" },
   { value: "100%", label: "Assistenza diretta" },
 ];
 
+const defaultHeroImage = "https://images.unsplash.com/photo-1758518727077-ffb66ffccced?w=800&h=500&fit=crop";
+const defaultHeroBadges = ["ODCEC Milano", "Revisori Legali MEF", "Consulenti del Lavoro"];
+
 export default async function HomePage() {
-  const [consultingAreas, deadlines, articles, teamMembers, settings] = await Promise.all([
+  const [consultingAreas, deadlines, articles, teamMembers, settings, homeContent] = await Promise.all([
     getConsultingAreas(),
     getTaxDeadlines(),
     getArticles(),
     getTeamMembers(),
     getSiteSettings(),
+    getHomeContent(),
   ]);
 
   const SITE_URL = resolveSiteUrl(settings?.siteUrl);
@@ -51,6 +59,13 @@ export default async function HomePage() {
   const upcomingDeadlines = deadlines.slice(0, 5);
   const featuredArticles = articles.slice(0, 3);
   const previewTeam = teamMembers.slice(0, 4);
+  const differentiators = homeContent?.differentiators?.length ? homeContent.differentiators : defaultDifferentiators;
+  const trustMetrics = homeContent?.trustMetrics?.length ? homeContent.trustMetrics : defaultTrustMetrics;
+  const heroEyebrow = homeContent?.heroEyebrow || "Studio Professionale · Milano dal 2002";
+  const heroTitle = homeContent?.heroTitle || "Consulenza fiscale e societaria per imprenditori e PMI";
+  const heroSubtitle = homeContent?.heroSubtitle || "Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.";
+  const heroBadges = homeContent?.heroBadges?.length ? homeContent.heroBadges : defaultHeroBadges;
+  const heroImage = homeContent?.heroImageUrl || defaultHeroImage;
 
   const phone = settings?.phone || "+39 02 8765 4321";
   const email = settings?.email || "studio@brambilla-associati.it";
@@ -85,17 +100,17 @@ export default async function HomePage() {
         <div className="container" style={{ position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="hero-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>Studio Professionale · Milano dal 2002</p>
-              <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>Consulenza fiscale e societaria per imprenditori e PMI</h1>
+              <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "1rem" }}>{heroEyebrow}</p>
+              <h1 className="display-xl" style={{ color: "white", marginBottom: "1.25rem" }}>{heroTitle}</h1>
               <p style={{ fontSize: "1.0625rem", lineHeight: 1.75, color: "rgba(255,255,255,0.72)", marginBottom: "2rem", maxWidth: "32rem" }}>
-                Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.
+                {heroSubtitle}
               </p>
               <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
                 <Link href="/contatti" className="btn-teal">Richiedi una consulenza</Link>
                 <Link href="/consulenza" className="btn-outline">Le nostre aree <ArrowRight size={15} /></Link>
               </div>
               <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
-                {["ODCEC Milano", "Revisori Legali MEF", "Consulenti del Lavoro"].map((item) => (
+                {heroBadges.map((item) => (
                   <div key={item} style={{ display: "flex", alignItems: "center", gap: "0.375rem" }}>
                     <CheckCircle2 size={14} style={{ color: "var(--brand-teal-light)", flexShrink: 0 }} />
                     <span style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.65)" }}>{item}</span>
@@ -105,7 +120,7 @@ export default async function HomePage() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} className="hero-image-col">
               <div style={{ borderRadius: "1rem", overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
-                <img src="https://images.unsplash.com/photo-1758518727077-ffb66ffccced?w=800&h=500&fit=crop" alt="Consulenti professionisti in riunione" style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }} />
+                <img src={heroImage} alt="Consulenti professionisti in riunione" style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: "0.75rem", border: "1px solid rgba(255,255,255,0.12)", overflow: "hidden" }}>
                 {trustMetrics.map((metric, i) => (
@@ -213,7 +228,7 @@ export default async function HomePage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {differentiators.map((item, i) => {
-              const Icon = item.icon;
+              const Icon = differentiatorIconMap[item.icon ?? ""] ?? BookOpen;
               return (
                 <div key={i} style={{ padding: "1.75rem", borderRadius: "0.75rem", border: "1px solid rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.05)", backdropFilter: "blur(8px)" }}>
                   <div style={{ width: "2.75rem", height: "2.75rem", borderRadius: "0.625rem", backgroundColor: "rgba(42,127,111,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>

@@ -88,3 +88,13 @@ export interface SanitySettings {
   logoUrl?: string;
   siteUrl?: string;
 }
+
+export interface SanityHomeContent {
+  heroEyebrow?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  heroBadges?: string[];
+  heroImageUrl?: string;
+  trustMetrics?: { value: string; label: string }[];
+  differentiators?: { icon?: string; title: string; description: string }[];
+}

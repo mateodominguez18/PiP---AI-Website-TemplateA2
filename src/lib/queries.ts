@@ -10,6 +10,7 @@ import type {
   SanityArticle,
   SanitySettings,
   SanityPageSeo,
+  SanityHomeContent,
 } from "./types";
 
 // Il contenuto è in cache per 60s, così le modifiche in Sanity appaiono in fretta senza interrogare l'API a ogni richiesta.
@@ -66,6 +67,16 @@ export async function getSiteSettings(): Promise<SanitySettings | null> {
 // come override; se vuoto, restano i default scritti nel codice.
 export async function getPageSeo(): Promise<SanityPageSeo | null> {
   return client.fetch(`*[_type == "pageSeo"][0]{ home, consulenza, guide, scadenze, team, contatti }`, {}, opts);
+}
+
+// Contenuti editabili della homepage (singleton "homeContent"): hero, metriche di fiducia
+// e punti di forza. Se vuoto, la homepage usa i contenuti di default scritti nel codice.
+export async function getHomeContent(): Promise<SanityHomeContent | null> {
+  return client.fetch(
+    `*[_type == "homeContent"][0] { heroEyebrow, heroTitle, heroSubtitle, heroBadges, "heroImageUrl": heroImage.asset->url, trustMetrics, differentiators }`,
+    {},
+    opts
+  );
 }
 
 // URL di base del sito, preso da Sanity (modificabile senza redeploy) con fallback su env/Vercel.
