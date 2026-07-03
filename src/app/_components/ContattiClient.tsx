@@ -10,6 +10,7 @@ interface ContattiClientProps {
   phone?: string;
   email?: string;
   address?: string;
+  privacyUrl?: string;
 }
 
 const clientTypes = [
@@ -35,6 +36,7 @@ export function ContattiClient({
   phone = "+39 02 123456",
   email = "info@brambilla-associati.it",
   address = "Via Montenapoleone 8, 20121 Milano",
+  privacyUrl = "https://www.iubenda.com/privacy-policy/98533713",
 }: ContattiClientProps) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -251,7 +253,7 @@ export function ContattiClient({
                 />
                 <span style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", lineHeight: 1.6 }}>
                   Ho letto e accetto la{" "}
-                  <a href="/privacy" style={{ color: "var(--brand-navy)" }}>Privacy Policy</a> e acconsento
+                  <a href={privacyUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--brand-navy)" }}>Privacy Policy</a> e acconsento
                   al trattamento dei miei dati personali per la gestione della richiesta. *
                 </span>
               </label>

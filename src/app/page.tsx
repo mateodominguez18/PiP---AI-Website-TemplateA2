@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Users, Clock, Award, BookOpen, PhoneCall, Calendar } from "lucide-react";
-import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings, getPageSeo, getHomeContent } from "@/lib/queries";
+import { getConsultingAreas, getTaxDeadlines, getArticles, getTeamMembers, getSiteSettings, getPageSeo } from "@/lib/queries";
 import { ConsultingCard } from "@/components/ConsultingCard";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TeamCard } from "@/components/TeamCard";
@@ -25,7 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
 // Mappa il nome icona salvato in Sanity al componente Lucide corrispondente.
 const differentiatorIconMap: Record<string, typeof BookOpen> = { BookOpen, Users, Shield, Award, Clock };
 
-// Contenuti di default se in Sanity (singleton "homeContent") non è stato compilato nulla.
+// Contenuti di default se in Sanity (siteSettings) non è stato compilato nulla: replicano
+// esattamente il testo storico della homepage, così il sito non cambia finché nessuno lo modifica.
 const defaultDifferentiators = [
   { icon: "BookOpen", title: "Aggiornamento normativo costante", description: "Seguiamo quotidianamente l'evoluzione della normativa tributaria, le circolari dell'Agenzia delle Entrate e la giurisprudenza. I nostri clienti ricevono proattivamente le informazioni rilevanti per la loro situazione." },
   { icon: "Users", title: "Interlocutore dedicato", description: "Ogni cliente ha un professionista di riferimento specifico. Nessun call center, nessun rimbalzo tra uffici: risposta diretta alle richieste, sempre dallo stesso interlocutore qualificato." },
@@ -45,13 +46,12 @@ const defaultHeroImage = "https://images.unsplash.com/photo-1758518727077-ffb66f
 const defaultHeroBadges = ["ODCEC Milano", "Revisori Legali MEF", "Consulenti del Lavoro"];
 
 export default async function HomePage() {
-  const [consultingAreas, deadlines, articles, teamMembers, settings, homeContent] = await Promise.all([
+  const [consultingAreas, deadlines, articles, teamMembers, settings] = await Promise.all([
     getConsultingAreas(),
     getTaxDeadlines(),
     getArticles(),
     getTeamMembers(),
     getSiteSettings(),
-    getHomeContent(),
   ]);
 
   const SITE_URL = resolveSiteUrl(settings?.siteUrl);
@@ -59,13 +59,49 @@ export default async function HomePage() {
   const upcomingDeadlines = deadlines.slice(0, 5);
   const featuredArticles = articles.slice(0, 3);
   const previewTeam = teamMembers.slice(0, 4);
-  const differentiators = homeContent?.differentiators?.length ? homeContent.differentiators : defaultDifferentiators;
-  const trustMetrics = homeContent?.trustMetrics?.length ? homeContent.trustMetrics : defaultTrustMetrics;
-  const heroEyebrow = homeContent?.heroEyebrow || "Studio Professionale · Milano dal 2002";
-  const heroTitle = homeContent?.heroTitle || "Consulenza fiscale e societaria per imprenditori e PMI";
-  const heroSubtitle = homeContent?.heroSubtitle || "Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.";
-  const heroBadges = homeContent?.heroBadges?.length ? homeContent.heroBadges : defaultHeroBadges;
-  const heroImage = homeContent?.heroImageUrl || defaultHeroImage;
+
+  const differentiators = settings?.differentiators?.length ? settings.differentiators : defaultDifferentiators;
+  const trustMetrics = settings?.trustMetrics?.length ? settings.trustMetrics : defaultTrustMetrics;
+  const heroEyebrow = settings?.heroEyebrow || "Studio Professionale · Milano dal 2002";
+  const heroTitle = settings?.heroTitle || "Consulenza fiscale e societaria per imprenditori e PMI";
+  const heroSubtitle = settings?.heroSubtitle || "Assistenza qualificata in ambito tributario, societario e del lavoro. Aggiornamento normativo sistematico e interlocutore dedicato per ogni cliente.";
+  const heroCtaPrimaryLabel = settings?.heroCtaPrimaryLabel || "Richiedi una consulenza";
+  const heroCtaSecondaryLabel = settings?.heroCtaSecondaryLabel || "Le nostre aree";
+  const heroBadges = settings?.heroBadges?.length ? settings.heroBadges : defaultHeroBadges;
+  const heroImage = settings?.heroImageUrl || defaultHeroImage;
+
+  const areeEyebrow = settings?.areeEyebrow || "Le nostre competenze";
+  const areeTitle = settings?.areeTitle || "Aree di consulenza";
+  const areeDescription = settings?.areeDescription || "Assistenza specializzata nelle principali discipline professionali del commercialista, del consulente fiscale e del consulente del lavoro.";
+  const areeCtaLabel = settings?.areeCtaLabel || "Vedi tutte le aree";
+
+  const scadenzeEyebrow = settings?.scadenzeEyebrow || "Calendario fiscale";
+  const scadenzeTitle = settings?.scadenzeTitle || "Prossime scadenze fiscali";
+  const scadenzeDescription = settings?.scadenzeDescription || "Teniamo traccia di tutti gli adempimenti rilevanti. Il calendario è aggiornato con le principali scadenze per imprese, professionisti e persone fisiche.";
+  const scadenzeCtaLabel = settings?.scadenzeCtaLabel || "Calendario completo";
+  const scadenzeColData = settings?.scadenzeColData || "Data";
+  const scadenzeColAdempimento = settings?.scadenzeColAdempimento || "Adempimento";
+  const scadenzeColCategoria = settings?.scadenzeColCategoria || "Categoria";
+  const scadenzeColPriorita = settings?.scadenzeColPriorita || "Priorità";
+
+  const guideEyebrow = settings?.guideEyebrow || "Aggiornamento normativo";
+  const guideTitle = settings?.guideTitle || "Guide e Novità fiscali";
+  const guideCtaLabel = settings?.guideCtaLabel || "Tutti gli articoli";
+
+  const differentiatorsEyebrow = settings?.differentiatorsEyebrow || "Il nostro approccio";
+  const differentiatorsTitle = settings?.differentiatorsTitle || "Perché scegliere lo Studio";
+
+  const teamEyebrow = settings?.teamEyebrow || "I professionisti";
+  const teamTitle = settings?.teamTitle || "Il Team";
+  const teamDescription = settings?.teamDescription || "Professionisti iscritti ai rispettivi Ordini con formazione specialistica e continuo aggiornamento normativo.";
+  const teamCtaLabel = settings?.teamCtaLabel || "Conosci il team";
+
+  const contattiEyebrow = settings?.contattiEyebrow || "Parlaci del tuo progetto";
+  const contattiTitle = settings?.contattiTitle || "Richiedi una prima consulenza";
+  const contattiDescription = settings?.contattiDescription || "Raccontaci la tua situazione e un nostro professionista ti contatterà entro 24 ore lavorative per valutare insieme come possiamo assisterti.";
+  const contattiPhoneLabel = settings?.contattiPhoneLabel || "Telefono";
+  const contattiEmailLabel = settings?.contattiEmailLabel || "Email";
+  const contattiFormTitle = settings?.contattiFormTitle || "Inviaci un messaggio";
 
   const phone = settings?.phone || "+39 02 8765 4321";
   const email = settings?.email || "studio@brambilla-associati.it";
@@ -106,8 +142,8 @@ export default async function HomePage() {
                 {heroSubtitle}
               </p>
               <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
-                <Link href="/contatti" className="btn-teal">Richiedi una consulenza</Link>
-                <Link href="/consulenza" className="btn-outline">Le nostre aree <ArrowRight size={15} /></Link>
+                <Link href="/contatti" className="btn-teal">{heroCtaPrimaryLabel}</Link>
+                <Link href="/consulenza" className="btn-outline">{heroCtaSecondaryLabel} <ArrowRight size={15} /></Link>
               </div>
               <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
                 {heroBadges.map((item) => (
@@ -140,17 +176,17 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Le nostre competenze</p>
-            <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "0.875rem" }}>Aree di consulenza</h2>
+            <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>{areeEyebrow}</p>
+            <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "0.875rem" }}>{areeTitle}</h2>
             <p style={{ fontSize: "1.0625rem", color: "var(--foreground-muted)", maxWidth: "34rem", margin: "0 auto" }}>
-              Assistenza specializzata nelle principali discipline professionali del commercialista, del consulente fiscale e del consulente del lavoro.
+              {areeDescription}
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
             {consultingAreas.map((area) => <ConsultingCard key={area._id} area={area} variant="grid" />)}
           </div>
           <div style={{ textAlign: "center" }}>
-            <Link href="/consulenza" className="btn-secondary">Vedi tutte le aree <ArrowRight size={15} /></Link>
+            <Link href="/consulenza" className="btn-secondary">{areeCtaLabel} <ArrowRight size={15} /></Link>
           </div>
         </div>
       </section>
@@ -160,22 +196,22 @@ export default async function HomePage() {
         <div className="container">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3.5rem", alignItems: "start" }} className="deadlines-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Calendario fiscale</p>
-              <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>Prossime scadenze fiscali</h2>
+              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>{scadenzeEyebrow}</p>
+              <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>{scadenzeTitle}</h2>
               <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "var(--foreground-muted)", marginBottom: "1.5rem" }}>
-                Teniamo traccia di tutti gli adempimenti rilevanti. Il calendario è aggiornato con le principali scadenze per imprese, professionisti e persone fisiche.
+                {scadenzeDescription}
               </p>
-              <Link href="/scadenze" className="btn-primary">Calendario completo <ArrowRight size={15} /></Link>
+              <Link href="/scadenze" className="btn-primary">{scadenzeCtaLabel} <ArrowRight size={15} /></Link>
             </div>
             <div>
               <div className="card" style={{ overflow: "hidden" }}>
                 <table className="deadline-table">
                   <thead>
                     <tr>
-                      <th style={{ width: "7rem" }}>Data</th>
-                      <th>Adempimento</th>
-                      <th style={{ width: "6rem" }}>Categoria</th>
-                      <th style={{ width: "5rem" }}>Priorità</th>
+                      <th style={{ width: "7rem" }}>{scadenzeColData}</th>
+                      <th>{scadenzeColAdempimento}</th>
+                      <th style={{ width: "6rem" }}>{scadenzeColCategoria}</th>
+                      <th style={{ width: "5rem" }}>{scadenzeColPriorita}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -208,10 +244,10 @@ export default async function HomePage() {
         <div className="container">
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2.5rem", gap: "1rem", flexWrap: "wrap" }}>
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Aggiornamento normativo</p>
-              <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>Guide e Novità fiscali</h2>
+              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>{guideEyebrow}</p>
+              <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>{guideTitle}</h2>
             </div>
-            <Link href="/guide" className="btn-secondary" style={{ flexShrink: 0 }}>Tutti gli articoli <ArrowRight size={15} /></Link>
+            <Link href="/guide" className="btn-secondary" style={{ flexShrink: 0 }}>{guideCtaLabel} <ArrowRight size={15} /></Link>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.25rem" }}>
             {featuredArticles.map((article) => <ArticleCard key={article._id} article={article} featured />)}
@@ -223,8 +259,8 @@ export default async function HomePage() {
       <section className="section" style={{ background: `linear-gradient(180deg, var(--brand-navy-dark) 0%, var(--brand-navy) 100%)` }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "0.625rem" }}>Il nostro approccio</p>
-            <h2 className="section-title" style={{ color: "white" }}>Perché scegliere lo Studio</h2>
+            <p className="eyebrow" style={{ color: "var(--brand-teal-light)", marginBottom: "0.625rem" }}>{differentiatorsEyebrow}</p>
+            <h2 className="section-title" style={{ color: "white" }}>{differentiatorsTitle}</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {differentiators.map((item, i) => {
@@ -247,17 +283,17 @@ export default async function HomePage() {
       <section className="section section-alt">
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>I professionisti</p>
-            <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>Il Team</h2>
+            <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>{teamEyebrow}</p>
+            <h2 className="section-title" style={{ color: "var(--foreground-default)" }}>{teamTitle}</h2>
             <p style={{ fontSize: "1rem", color: "var(--foreground-muted)", maxWidth: "32rem", margin: "0.75rem auto 0" }}>
-              Professionisti iscritti ai rispettivi Ordini con formazione specialistica e continuo aggiornamento normativo.
+              {teamDescription}
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: "1.25rem", marginBottom: "2.5rem" }}>
             {previewTeam.map((member) => <TeamCard key={member._id} member={member} compact />)}
           </div>
           <div style={{ textAlign: "center" }}>
-            <Link href="/team" className="btn-secondary">Conosci il team <ArrowRight size={15} /></Link>
+            <Link href="/team" className="btn-secondary">{teamCtaLabel} <ArrowRight size={15} /></Link>
           </div>
         </div>
       </section>
@@ -267,10 +303,10 @@ export default async function HomePage() {
         <div className="container">
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }} className="contact-grid">
             <div>
-              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>Parlaci del tuo progetto</p>
-              <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>Richiedi una prima consulenza</h2>
+              <p className="eyebrow" style={{ color: "var(--brand-teal)", marginBottom: "0.625rem" }}>{contattiEyebrow}</p>
+              <h2 className="section-title" style={{ color: "var(--foreground-default)", marginBottom: "1rem" }}>{contattiTitle}</h2>
               <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--foreground-muted)", marginBottom: "1.75rem" }}>
-                Raccontaci la tua situazione e un nostro professionista ti contatterà entro 24 ore lavorative per valutare insieme come possiamo assisterti.
+                {contattiDescription}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 <a href={`tel:${phone}`} style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none" }}>
@@ -278,7 +314,7 @@ export default async function HomePage() {
                     <PhoneCall size={16} style={{ color: "var(--brand-navy)" }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>Telefono</p>
+                    <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>{contattiPhoneLabel}</p>
                     <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{phone}</p>
                   </div>
                 </a>
@@ -287,15 +323,15 @@ export default async function HomePage() {
                     <Calendar size={16} style={{ color: "var(--brand-navy)" }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>Email</p>
+                    <p style={{ fontSize: "0.8125rem", color: "var(--foreground-muted)", marginBottom: "0.125rem" }}>{contattiEmailLabel}</p>
                     <p style={{ fontSize: "0.9375rem", fontWeight: 500, color: "var(--foreground-default)" }}>{email}</p>
                   </div>
                 </a>
               </div>
             </div>
             <div className="card" style={{ padding: "2rem" }}>
-              <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "1.5rem" }}>Inviaci un messaggio</h3>
-              <HomeContactForm />
+              <h3 style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "1.5rem" }}>{contattiFormTitle}</h3>
+              <HomeContactForm privacyUrl={settings?.privacyPolicyUrl} />
             </div>
           </div>
         </div>

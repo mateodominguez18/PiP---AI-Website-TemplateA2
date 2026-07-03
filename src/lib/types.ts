@@ -87,14 +87,58 @@ export interface SanitySettings {
   recruitingEmail?: string;
   logoUrl?: string;
   siteUrl?: string;
-}
 
-export interface SanityHomeContent {
+  // Link legali (footer, moduli di contatto)
+  privacyPolicyUrl?: string;
+  cookiePolicyUrl?: string;
+
+  // Homepage — Hero
   heroEyebrow?: string;
   heroTitle?: string;
   heroSubtitle?: string;
+  heroCtaPrimaryLabel?: string;
+  heroCtaSecondaryLabel?: string;
   heroBadges?: string[];
   heroImageUrl?: string;
   trustMetrics?: { value: string; label: string }[];
+
+  // Homepage — Aree di consulenza
+  areeEyebrow?: string;
+  areeTitle?: string;
+  areeDescription?: string;
+  areeCtaLabel?: string;
+
+  // Homepage — Scadenze
+  scadenzeEyebrow?: string;
+  scadenzeTitle?: string;
+  scadenzeDescription?: string;
+  scadenzeCtaLabel?: string;
+  scadenzeColData?: string;
+  scadenzeColAdempimento?: string;
+  scadenzeColCategoria?: string;
+  scadenzeColPriorita?: string;
+
+  // Homepage — Guide
+  guideEyebrow?: string;
+  guideTitle?: string;
+  guideCtaLabel?: string;
+
+  // Homepage — Perché scegliere lo Studio
+  differentiatorsEyebrow?: string;
+  differentiatorsTitle?: string;
   differentiators?: { icon?: string; title: string; description: string }[];
+
+  // Homepage — Team
+  teamEyebrow?: string;
+  teamTitle?: string;
+  teamDescription?: string;
+  teamCtaLabel?: string;
+
+  // Homepage — Contatti
+  contattiEyebrow?: string;
+  contattiTitle?: string;
+  contattiDescription?: string;
+  contattiPhoneLabel?: string;
+  contattiEmailLabel?: string;
+  contattiFormTitle?: string;
 }

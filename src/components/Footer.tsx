@@ -10,6 +10,8 @@ interface FooterProps {
   address?: string;
   hours?: string;
   logoUrl?: string;
+  privacyPolicyUrl?: string;
+  cookiePolicyUrl?: string;
 }
 
 const consultingLinks = [
@@ -36,6 +38,8 @@ export function Footer({
   address = "Via Montenapoleone 8, 20121 Milano",
   hours = "Lun–Ven 9:00–18:00",
   logoUrl,
+  privacyPolicyUrl = "https://www.iubenda.com/privacy-policy/98533713",
+  cookiePolicyUrl = "https://www.iubenda.com/privacy-policy/98533713/cookie-policy",
 }: FooterProps) {
   return (
     <footer style={{ backgroundColor: "var(--brand-navy-dark)", color: "rgba(255,255,255,0.85)" }}>
@@ -164,7 +168,7 @@ export function Footer({
           </p>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             <a
-              href="https://www.iubenda.com/privacy-policy/98533713"
+              href={privacyPolicyUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", textDecoration: "none" }}
@@ -172,7 +176,7 @@ export function Footer({
               Privacy Policy
             </a>
             <a
-              href="https://www.iubenda.com/privacy-policy/98533713/cookie-policy"
+              href={cookiePolicyUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontSize: "0.8125rem", color: "rgba(255,255,255,0.4)", textDecoration: "none" }}

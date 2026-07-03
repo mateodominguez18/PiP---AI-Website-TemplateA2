@@ -33,6 +33,7 @@ export default async function ContattiPage() {
             phone={settings?.phone}
             email={settings?.email}
             address={settings?.address}
+            privacyUrl={settings?.privacyPolicyUrl}
           />
         </div>
       </section>

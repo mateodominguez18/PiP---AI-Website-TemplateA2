@@ -93,6 +93,8 @@ export default async function RootLayout({
               address={settings?.address}
               hours={settings?.hours}
               logoUrl={settings?.logoUrl}
+              privacyPolicyUrl={settings?.privacyPolicyUrl}
+              cookiePolicyUrl={settings?.cookiePolicyUrl}
             />
           }
         >

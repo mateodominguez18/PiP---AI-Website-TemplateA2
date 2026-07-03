@@ -3,7 +3,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./src/sanity/schemas";
 
-const singletons = new Set(["siteSettings", "themeSettings", "pageSeo", "homeContent"]);
+const singletons = new Set(["siteSettings", "themeSettings", "pageSeo"]);
 
 export default defineConfig({
   name: "brambilla-associati",
@@ -39,14 +39,6 @@ export default defineConfig({
                 S.document()
                   .schemaType("pageSeo")
                   .documentId("pageSeo")
-              ),
-            S.listItem()
-              .title("Contenuti Homepage")
-              .id("homeContent")
-              .child(
-                S.document()
-                  .schemaType("homeContent")
-                  .documentId("homeContent")
               ),
             S.divider(),
             S.documentTypeListItem("teamMember").title("Team"),

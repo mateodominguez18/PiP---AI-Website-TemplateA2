@@ -10,7 +10,6 @@ import type {
   SanityArticle,
   SanitySettings,
   SanityPageSeo,
-  SanityHomeContent,
 } from "./types";
 
 // Il contenuto è in cache per 60s, così le modifiche in Sanity appaiono in fretta senza interrogare l'API a ogni richiesta.
@@ -55,28 +54,26 @@ export async function getArticle(slug: string): Promise<SanityArticle | null> {
   );
 }
 
+const SITE_SETTINGS_FIELDS = `
+  studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, "logoUrl": logo.asset->url,
+  privacyPolicyUrl, cookiePolicyUrl,
+  heroEyebrow, heroTitle, heroSubtitle, heroCtaPrimaryLabel, heroCtaSecondaryLabel, heroBadges, "heroImageUrl": heroImage.asset->url, trustMetrics,
+  areeEyebrow, areeTitle, areeDescription, areeCtaLabel,
+  scadenzeEyebrow, scadenzeTitle, scadenzeDescription, scadenzeCtaLabel, scadenzeColData, scadenzeColAdempimento, scadenzeColCategoria, scadenzeColPriorita,
+  guideEyebrow, guideTitle, guideCtaLabel,
+  differentiatorsEyebrow, differentiatorsTitle, differentiators,
+  teamEyebrow, teamTitle, teamDescription, teamCtaLabel,
+  contattiEyebrow, contattiTitle, contattiDescription, contattiPhoneLabel, contattiEmailLabel, contattiFormTitle
+`;
+
 export async function getSiteSettings(): Promise<SanitySettings | null> {
-  return client.fetch(
-    `*[_type == "siteSettings"][0] { studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, "logoUrl": logo.asset->url }`,
-    {},
-    opts
-  );
+  return client.fetch(`*[_type == "siteSettings"][0] { ${SITE_SETTINGS_FIELDS} }`, {}, opts);
 }
 
 // SEO opzionale delle pagine fisse (singleton "pageSeo"). Ogni pagina usa il suo blocco
 // come override; se vuoto, restano i default scritti nel codice.
 export async function getPageSeo(): Promise<SanityPageSeo | null> {
   return client.fetch(`*[_type == "pageSeo"][0]{ home, consulenza, guide, scadenze, team, contatti }`, {}, opts);
-}
-
-// Contenuti editabili della homepage (singleton "homeContent"): hero, metriche di fiducia
-// e punti di forza. Se vuoto, la homepage usa i contenuti di default scritti nel codice.
-export async function getHomeContent(): Promise<SanityHomeContent | null> {
-  return client.fetch(
-    `*[_type == "homeContent"][0] { heroEyebrow, heroTitle, heroSubtitle, heroBadges, "heroImageUrl": heroImage.asset->url, trustMetrics, differentiators }`,
-    {},
-    opts
-  );
 }
 
 // URL di base del sito, preso da Sanity (modificabile senza redeploy) con fallback su env/Vercel.

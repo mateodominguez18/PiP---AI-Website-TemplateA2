@@ -5,10 +5,13 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
-export function HomeContactForm() {
+interface HomeContactFormProps {
+  privacyUrl?: string;
+}
+
+export function HomeContactForm({ privacyUrl = "https://www.iubenda.com/privacy-policy/98533713" }: HomeContactFormProps) {
   const [form, setForm] = React.useState({ nome: "", cognome: "", email: "", service: "", messaggio: "" });
   const [sent, setSent] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -89,7 +92,7 @@ export function HomeContactForm() {
       </button>
       <p style={{ fontSize: "0.75rem", color: "var(--foreground-muted)", textAlign: "center" }}>
         I tuoi dati saranno trattati nel rispetto della{" "}
-        <Link href="/privacy" style={{ color: "var(--brand-navy)" }}>Privacy Policy</Link>.
+        <a href={privacyUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--brand-navy)" }}>Privacy Policy</a>.
       </p>
     </form>
   );
