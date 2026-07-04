@@ -69,6 +69,14 @@ export const article = defineType({
       title: "Immagine copertina",
       type: "image",
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alternativo (alt)",
+          type: "string",
+          description: "Se vuoto, viene usato il titolo dell'articolo.",
+        }),
+      ],
     }),
     defineField({
       name: "tags",
@@ -104,6 +112,9 @@ export const article = defineType({
         {
           type: "image",
           options: { hotspot: true },
+          fields: [
+            defineField({ name: "alt", title: "Testo alternativo (alt)", type: "string" }),
+          ],
         },
       ],
     }),

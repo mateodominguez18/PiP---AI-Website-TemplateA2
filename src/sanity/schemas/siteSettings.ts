@@ -29,6 +29,14 @@ export const siteSettings = defineType({
       type: "image",
       description: "Logo dello studio. Se vuoto, viene mostrata la sigla ricavata dal nome.",
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alternativo (alt)",
+          type: "string",
+          description: "Se vuoto, viene usato il nome dello studio.",
+        }),
+      ],
     }),
     defineField({
       name: "tagline",
@@ -102,7 +110,16 @@ export const siteSettings = defineType({
       of: [{ type: "string" }],
       fieldset: "hero",
     }),
-    defineField({ name: "heroImage", title: "Immagine", type: "image", options: { hotspot: true }, fieldset: "hero" }),
+    defineField({
+      name: "heroImage",
+      title: "Immagine",
+      type: "image",
+      options: { hotspot: true },
+      fieldset: "hero",
+      fields: [
+        defineField({ name: "alt", title: "Testo alternativo (alt)", type: "string" }),
+      ],
+    }),
     defineField({
       name: "trustMetrics",
       title: "Metriche di fiducia",

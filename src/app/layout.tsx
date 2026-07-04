@@ -83,7 +83,7 @@ export default async function RootLayout({
       </head>
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <SiteChrome
-          navbar={<Navbar studioName={settings?.studioName} phone={settings?.phone} logoUrl={settings?.logoUrl} />}
+          navbar={<Navbar studioName={settings?.studioName} phone={settings?.phone} logoUrl={settings?.logoUrl} logoAlt={settings?.logoAlt} />}
           footer={
             <Footer
               studioName={settings?.studioName}
@@ -93,6 +93,7 @@ export default async function RootLayout({
               address={settings?.address}
               hours={settings?.hours}
               logoUrl={settings?.logoUrl}
+              logoAlt={settings?.logoAlt}
               privacyPolicyUrl={settings?.privacyPolicyUrl}
               cookiePolicyUrl={settings?.cookiePolicyUrl}
             />

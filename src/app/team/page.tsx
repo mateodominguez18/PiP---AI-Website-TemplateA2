@@ -72,7 +72,7 @@ export default async function TeamPage() {
                 {idx % 2 === 0 ? (
                   <>
                     <div style={{ height: "100%", minHeight: "22rem" }}>
-                      <img src={member.imageUrl || PLACEHOLDER} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
+                      <img src={member.imageUrl || PLACEHOLDER} alt={member.imageAlt || member.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
                     </div>
                     <div style={{ padding: "2.5rem" }}><TeamMemberContent member={member} /></div>
                   </>
@@ -80,7 +80,7 @@ export default async function TeamPage() {
                   <>
                     <div style={{ padding: "2.5rem" }}><TeamMemberContent member={member} /></div>
                     <div style={{ height: "100%", minHeight: "22rem" }}>
-                      <img src={member.imageUrl || PLACEHOLDER} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
+                      <img src={member.imageUrl || PLACEHOLDER} alt={member.imageAlt || member.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
                     </div>
                   </>
                 )}

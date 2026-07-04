@@ -10,6 +10,7 @@ interface FooterProps {
   address?: string;
   hours?: string;
   logoUrl?: string;
+  logoAlt?: string;
   privacyPolicyUrl?: string;
   cookiePolicyUrl?: string;
 }
@@ -38,6 +39,7 @@ export function Footer({
   address = "Via Montenapoleone 8, 20121 Milano",
   hours = "Lun–Ven 9:00–18:00",
   logoUrl,
+  logoAlt,
   privacyPolicyUrl = "https://www.iubenda.com/privacy-policy/98533713",
   cookiePolicyUrl = "https://www.iubenda.com/privacy-policy/98533713/cookie-policy",
 }: FooterProps) {
@@ -58,7 +60,7 @@ export function Footer({
               {logoUrl ? (
                 <img
                   src={logoUrl}
-                  alt={studioName}
+                  alt={logoAlt || studioName}
                   style={{ height: "2rem", width: "auto", maxWidth: "8rem", objectFit: "contain", display: "block", flexShrink: 0 }}
                 />
               ) : (

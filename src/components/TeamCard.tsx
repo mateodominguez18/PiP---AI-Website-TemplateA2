@@ -18,7 +18,7 @@ export function TeamCard({ member, compact = false }: TeamCardProps) {
     return (
       <div className="card card-hover" style={{ padding: "1.5rem", textAlign: "center" }}>
         <div style={{ width: "5rem", height: "5rem", borderRadius: "50%", overflow: "hidden", margin: "0 auto 1rem", border: "3px solid var(--border-default)" }}>
-          <img src={imgSrc} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={imgSrc} alt={member.imageAlt || member.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
         <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--foreground-default)", marginBottom: "0.25rem" }}>{member.name}</h3>
         <p style={{ fontSize: "0.8125rem", color: "var(--brand-teal)", fontWeight: 500, marginBottom: "0.25rem" }}>{member.title}</p>
@@ -40,7 +40,7 @@ export function TeamCard({ member, compact = false }: TeamCardProps) {
   return (
     <div className="card" style={{ overflow: "hidden", display: "flex" }}>
       <div style={{ width: "8rem", flexShrink: 0 }}>
-        <img src={imgSrc} alt={member.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        <img src={imgSrc} alt={member.imageAlt || member.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
       </div>
       <div style={{ padding: "1.5rem", flex: 1 }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.75rem", marginBottom: "0.5rem" }}>

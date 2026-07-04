@@ -29,6 +29,7 @@ export interface SanityTeamMember {
   specializations?: string[];
   linkedIn?: string;
   imageUrl?: string;
+  imageAlt?: string;
   order?: number;
 }
 
@@ -69,6 +70,7 @@ export interface SanityArticle {
   authorRole?: string;
   excerpt?: string;
   imageUrl?: string;
+  imageAlt?: string;
   tags?: string[];
   keyword_principale?: string;
   body?: unknown[];
@@ -86,6 +88,7 @@ export interface SanitySettings {
   piva?: string;
   recruitingEmail?: string;
   logoUrl?: string;
+  logoAlt?: string;
   siteUrl?: string;
 
   // Link legali (footer, moduli di contatto)
@@ -100,6 +103,7 @@ export interface SanitySettings {
   heroCtaSecondaryLabel?: string;
   heroBadges?: string[];
   heroImageUrl?: string;
+  heroImageAlt?: string;
   trustMetrics?: { value: string; label: string }[];
 
   // Homepage — Aree di consulenza

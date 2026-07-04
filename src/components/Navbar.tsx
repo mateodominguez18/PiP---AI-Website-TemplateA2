@@ -10,6 +10,7 @@ interface NavbarProps {
   studioName?: string;
   phone?: string;
   logoUrl?: string;
+  logoAlt?: string;
 }
 
 const navItems = [
@@ -19,7 +20,7 @@ const navItems = [
   { label: "Team", href: "/team" },
 ];
 
-export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 123456", logoUrl }: NavbarProps) {
+export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 123456", logoUrl, logoAlt }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -53,7 +54,7 @@ export function Navbar({ studioName = "Brambilla & Associati", phone = "+39 02 1
             {logoUrl ? (
               <img
                 src={logoUrl}
-                alt={studioName}
+                alt={logoAlt || studioName}
                 style={{ height: "2rem", width: "auto", maxWidth: "8rem", objectFit: "contain", display: "block", flexShrink: 0 }}
               />
             ) : (

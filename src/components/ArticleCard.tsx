@@ -20,7 +20,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
     return (
       <div className="card card-hover" style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
         <div className="article-img-wrap">
-          <img src={imgSrc} alt={article.title} />
+          <img src={imgSrc} alt={article.imageAlt || article.title} />
         </div>
         <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.875rem" }}>
@@ -48,7 +48,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
   return (
     <div className="card" style={{ display: "flex", gap: "1rem", padding: "1.25rem", alignItems: "flex-start" }}>
       <div style={{ width: "5rem", height: "4rem", borderRadius: "0.5rem", overflow: "hidden", flexShrink: 0 }}>
-        <img src={imgSrc} alt={article.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img src={imgSrc} alt={article.imageAlt || article.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <span className="badge badge-gray" style={{ marginBottom: "0.375rem" }}>{article.category}</span>

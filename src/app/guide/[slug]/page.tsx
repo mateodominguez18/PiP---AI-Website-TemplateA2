@@ -8,6 +8,7 @@ import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArticleCard } from "@/components/ArticleCard";
 import { formatDateFull } from "@/lib/utils";
 import { buildMetadata } from "@/lib/seo";
+import { urlFor } from "@/lib/sanity";
 
 const PLACEHOLDER_IMG = "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=450&fit=crop";
 
@@ -60,6 +61,15 @@ const ptComponents = {
     ),
     number: ({ children }: { children?: React.ReactNode }) => (
       <li style={{ marginBottom: "0.375rem", color: "var(--foreground-muted)", lineHeight: 1.65 }}>{children}</li>
+    ),
+  },
+  types: {
+    image: ({ value }: { value: { alt?: string } }) => (
+      <img
+        src={urlFor(value).width(800).fit("max").auto("format").url()}
+        alt={value.alt || ""}
+        style={{ width: "100%", borderRadius: "0.5rem", margin: "1.5rem 0" }}
+      />
     ),
   },
 };
@@ -148,7 +158,7 @@ export default async function ArticoloPage({ params }: { params: Promise<{ slug:
       </section>
 
       <div style={{ height: "22rem", overflow: "hidden" }}>
-        <img src={imgSrc} alt={article.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img src={imgSrc} alt={article.imageAlt || article.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
 
       <section className="section">

@@ -16,10 +16,10 @@ import type {
 const opts = { next: { revalidate: 60 } };
 
 // "imageUrl": image.asset->url risolve il riferimento all'asset di Sanity così i componenti ricevono direttamente l'URL come stringa.
-const TEAM_FIELDS = `_id, name, title, role, bio, bioExtended, education, specializations, linkedIn, "imageUrl": image.asset->url, order`;
+const TEAM_FIELDS = `_id, name, title, role, bio, bioExtended, education, specializations, linkedIn, "imageUrl": image.asset->url, "imageAlt": image.alt, order`;
 const AREA_FIELDS = `_id, title, "slug": slug.current, icon, shortDescription, fullDescription, activities, benefits, targetClients, faq, order, seo`;
 const DEADLINE_FIELDS = `_id, title, description, date, month, category, priority, audience`;
-const ARTICLE_FIELDS = `_id, title, "slug": slug.current, category, date, readTime, author, authorRole, excerpt, "imageUrl": image.asset->url, tags`;
+const ARTICLE_FIELDS = `_id, title, "slug": slug.current, category, date, readTime, author, authorRole, excerpt, "imageUrl": image.asset->url, "imageAlt": image.alt, tags`;
 const ARTICLE_FULL_FIELDS = `${ARTICLE_FIELDS}, keyword_principale, body, faq, seo`;
 
 export async function getTeamMembers(): Promise<SanityTeamMember[]> {
@@ -55,9 +55,9 @@ export async function getArticle(slug: string): Promise<SanityArticle | null> {
 }
 
 const SITE_SETTINGS_FIELDS = `
-  studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, "logoUrl": logo.asset->url,
+  studioName, tagline, email, phone, address, hours, piva, recruitingEmail, siteUrl, "logoUrl": logo.asset->url, "logoAlt": logo.alt,
   privacyPolicyUrl, cookiePolicyUrl,
-  heroEyebrow, heroTitle, heroSubtitle, heroCtaPrimaryLabel, heroCtaSecondaryLabel, heroBadges, "heroImageUrl": heroImage.asset->url, trustMetrics,
+  heroEyebrow, heroTitle, heroSubtitle, heroCtaPrimaryLabel, heroCtaSecondaryLabel, heroBadges, "heroImageUrl": heroImage.asset->url, "heroImageAlt": heroImage.alt, trustMetrics,
   areeEyebrow, areeTitle, areeDescription, areeCtaLabel,
   scadenzeEyebrow, scadenzeTitle, scadenzeDescription, scadenzeCtaLabel, scadenzeColData, scadenzeColAdempimento, scadenzeColCategoria, scadenzeColPriorita,
   guideEyebrow, guideTitle, guideCtaLabel,

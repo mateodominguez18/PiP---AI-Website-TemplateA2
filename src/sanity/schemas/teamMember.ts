@@ -57,6 +57,14 @@ export const teamMember = defineType({
       title: "Foto",
       type: "image",
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Testo alternativo (alt)",
+          type: "string",
+          description: "Se vuoto, viene usato il nome del professionista.",
+        }),
+      ],
     }),
     defineField({
       name: "order",

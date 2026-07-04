@@ -69,6 +69,7 @@ export default async function HomePage() {
   const heroCtaSecondaryLabel = settings?.heroCtaSecondaryLabel || "Le nostre aree";
   const heroBadges = settings?.heroBadges?.length ? settings.heroBadges : defaultHeroBadges;
   const heroImage = settings?.heroImageUrl || defaultHeroImage;
+  const heroImageAlt = settings?.heroImageAlt || "Consulenti professionisti in riunione";
 
   const areeEyebrow = settings?.areeEyebrow || "Le nostre competenze";
   const areeTitle = settings?.areeTitle || "Aree di consulenza";
@@ -156,7 +157,7 @@ export default async function HomePage() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} className="hero-image-col">
               <div style={{ borderRadius: "1rem", overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.3)" }}>
-                <img src={heroImage} alt="Consulenti professionisti in riunione" style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }} />
+                <img src={heroImage} alt={heroImageAlt} style={{ width: "100%", height: "22rem", objectFit: "cover", display: "block" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: "0.75rem", border: "1px solid rgba(255,255,255,0.12)", overflow: "hidden" }}>
                 {trustMetrics.map((metric, i) => (
